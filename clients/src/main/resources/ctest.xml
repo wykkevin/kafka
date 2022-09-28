@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <configs>
+        <name>reserved.broker.max.id</name>
+        <value>100</value>
+    </configs>
+    <configs>
+        <name>dirs</name>
+        <value>a/log/directory</value>
+    </configs>
+</config>
