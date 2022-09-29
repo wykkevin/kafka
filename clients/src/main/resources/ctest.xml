@@ -5,7 +5,7 @@
         <value>100</value>
     </configs>
     <configs>
-        <name>dirs</name>
+        <name>log.dirs</name>
         <value>a/log/directory</value>
     </configs>
 </config>

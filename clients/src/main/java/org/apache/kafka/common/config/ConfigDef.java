@@ -480,16 +480,30 @@ public class ConfigDef {
         // parse all known keys
         Map<String, Object> values = new HashMap<>();
         for (ConfigKey key : configKeys.values())
-            values.put(key.name, parseValue(key, props.get(key.name), props.containsKey(key.name)));
+            values.put(key.name, parseValue(key, props.get(key.name), props.containsKey(key.name), false));
         return values;
     }
 
-    Object parseValue(ConfigKey key, Object value, boolean isSet) {
+    public Map<String, Object> parseWithoutErrorChecking(Map<?, ?> props) {
+        // Check all configurations are defined
+        List<String> undefinedConfigKeys = undefinedDependentConfigs();
+        if (!undefinedConfigKeys.isEmpty()) {
+            String joined = Utils.join(undefinedConfigKeys, ",");
+            throw new ConfigException("Some configurations in are referred in the dependents, but not defined: " + joined);
+        }
+        // parse all known keys
+        Map<String, Object> values = new HashMap<>();
+        for (ConfigKey key : configKeys.values())
+            values.put(key.name, parseValue(key, props.get(key.name), props.containsKey(key.name), true));
+        return values;
+    }
+
+    Object parseValue(ConfigKey key, Object value, boolean isSet, boolean shouldIgnoreErrors) {
         Object parsedValue;
         if (isSet) {
             parsedValue = parseType(key.name, value, key.type);
         // props map doesn't contain setting, the key is required because no default value specified - its an error
-        } else if (NO_DEFAULT_VALUE.equals(key.defaultValue)) {
+        } else if (NO_DEFAULT_VALUE.equals(key.defaultValue) && !shouldIgnoreErrors) {
             throw new ConfigException("Missing required configuration \"" + key.name + "\" which has no default value.");
         } else {
             // otherwise assign setting its default value

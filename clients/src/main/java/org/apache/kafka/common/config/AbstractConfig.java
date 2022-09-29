@@ -132,40 +132,31 @@ public class AbstractConfig {
         }
 
         // Insert ctest configs
-//        try {
-//            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("ctest.json");
-//            JSONParser parser = new JSONParser();
-//            JSONObject ctestConfig = (JSONObject) parser.parse(new InputStreamReader(inputStream, "UTF-8"));
-//            JSONArray configs = (JSONArray) ctestConfig.get("configs");
-//            for (Object configObject : configs) {
-//                JSONObject config = (JSONObject) configObject;
-//                String name = (String) config.get("name");
-//                Object value = config.get("value");
-//                this.values.put(name, value);
-//            }
-//        } catch (IOException | ParseException e) {
-//            throw new RuntimeException(e);
-//        }
-
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("ctest.xml");
             Document doc = db.parse(inputStream);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
             NodeList nodeList = doc.getElementsByTagName("configs");
+
+            Map<String, Object> ctestConfigMap = new HashMap<>();
+            List<String> changedConfigNames = new ArrayList<>();
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
-                System.out.println("node " + node.getNodeName());
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    // get staff's attribute
                     String name = element.getElementsByTagName("name").item(0).getTextContent();
-                    Object value = element.getElementsByTagName("value").item(0);
-                    System.out.println("name " + name);
-                    System.out.println("value " + value);
-                    this.values.put(name, value);
+                    Object value = element.getElementsByTagName("value").item(0).getTextContent();
+                    ctestConfigMap.put(name, value);
+                    changedConfigNames.add(name);
+                }
+            }
+            ctestConfigMap = (Map<String, Object>) resolveConfigVariables(configProviderProps, ctestConfigMap);
+            ctestConfigMap = definition.parseWithoutErrorChecking(ctestConfigMap);
+            for (Map.Entry<String, Object> ctestConfig : ctestConfigMap.entrySet()) {
+                if (changedConfigNames.contains(ctestConfig.getKey())) {
+                    this.values.put(ctestConfig.getKey(), ctestConfig.getValue());
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
@@ -365,12 +356,12 @@ public class AbstractConfig {
                 String keyWithNoPrefix = entry.getKey().substring(prefix.length());
                 ConfigDef.ConfigKey configKey = definition.configKeys().get(keyWithNoPrefix);
                 if (configKey != null)
-                    result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true));
+                    result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true, false));
                 else {
                     String keyWithNoSecondaryPrefix = keyWithNoPrefix.substring(keyWithNoPrefix.indexOf('.') + 1);
                     configKey = definition.configKeys().get(keyWithNoSecondaryPrefix);
                     if (configKey != null)
-                        result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true));
+                        result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true, false));
                 }
             }
         }
@@ -395,7 +386,7 @@ public class AbstractConfig {
             for (Map.Entry<String, ?> entry : withPrefix.entrySet()) {
                 ConfigDef.ConfigKey configKey = definition.configKeys().get(entry.getKey());
                 if (configKey != null)
-                    result.put(entry.getKey(), definition.parseValue(configKey, entry.getValue(), true));
+                    result.put(entry.getKey(), definition.parseValue(configKey, entry.getValue(), true, false));
             }
 
             return result;
