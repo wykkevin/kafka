@@ -68,6 +68,8 @@
       <allow pkg="org.apache.kafka.common.config" />
       <!-- for testing -->
       <allow pkg="org.apache.kafka.common.metrics" />
+      <allow pkg="org.w3c.dom" />
+      <allow pkg="javax.xml.parsers" />
     </subpackage>
 
     <!-- Third-party compression libraries should only be references from this package -->
