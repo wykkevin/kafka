@@ -204,7 +204,6 @@ public class AbstractConfig {
     protected Object get(String key) {
         if (!values.containsKey(key))
             throw new ConfigException(String.format("Unknown configuration '%s'", key));
-        log.info("[CTEST][GET-PARAM] " + key); // CTEST
         used.add(key);
         return values.get(key);
     }

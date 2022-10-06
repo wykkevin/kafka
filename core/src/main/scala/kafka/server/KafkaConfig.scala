@@ -1607,17 +1607,60 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     }
   }
 
-  val zkSslClientEnable = zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslClientEnableProp)
-  val zkClientCnxnSocketClassName = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkClientCnxnSocketProp)
-  val zkSslKeyStoreLocation = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreLocationProp)
-  val zkSslKeyStorePassword = zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslKeyStorePasswordProp)
-  val zkSslKeyStoreType = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreTypeProp)
-  val zkSslTrustStoreLocation = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreLocationProp)
-  val zkSslTrustStorePassword = zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslTrustStorePasswordProp)
-  val zkSslTrustStoreType = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreTypeProp)
-  val ZkSslProtocol = zkStringConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslProtocolProp)
-  val ZkSslEnabledProtocols = zkListConfigOrSystemProperty(KafkaConfig.ZkSslEnabledProtocolsProp)
-  val ZkSslCipherSuites = zkListConfigOrSystemProperty(KafkaConfig.ZkSslCipherSuitesProp)
+  def zkSslClientEnable = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslClientEnableProp)
+    zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslClientEnableProp)
+  }
+
+  def zkClientCnxnSocketClassName = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkClientCnxnSocketProp)
+    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkClientCnxnSocketProp)
+  }
+
+  def zkSslKeyStoreLocation = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslKeyStoreLocationProp)
+    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreLocationProp)
+  }
+
+  def zkSslKeyStorePassword = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslKeyStorePasswordProp)
+    zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslKeyStorePasswordProp)
+  }
+
+  def zkSslKeyStoreType = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslKeyStoreTypeProp)
+    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreTypeProp)
+  }
+
+  def zkSslTrustStoreLocation = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslTrustStoreLocationProp)
+    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreLocationProp)
+  }
+
+  def zkSslTrustStorePassword = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslTrustStorePasswordProp)
+    zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslTrustStorePasswordProp)
+  }
+
+  def zkSslTrustStoreType = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslTrustStoreTypeProp)
+    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreTypeProp)
+  }
+
+  def ZkSslProtocol = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslProtocolProp)
+    zkStringConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslProtocolProp)
+  }
+
+  def ZkSslEnabledProtocols = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslEnabledProtocolsProp)
+    zkListConfigOrSystemProperty(KafkaConfig.ZkSslEnabledProtocolsProp)
+  }
+
+  def ZkSslCipherSuites = {
+    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslCipherSuitesProp)
+    zkListConfigOrSystemProperty(KafkaConfig.ZkSslCipherSuitesProp)
+  }
   val ZkSslEndpointIdentificationAlgorithm = {
     // Use the system property if it exists and the Kafka config value was defaulted rather than actually provided
     // Need to translate any system property value from true/false to HTTPS/<blank>
@@ -1637,7 +1680,10 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   val ZkSslOcspEnable = zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslOcspEnableProp)
   /** ********* General Configuration ***********/
   val brokerIdGenerationEnable: Boolean = getBoolean(KafkaConfig.BrokerIdGenerationEnableProp)
-  val maxReservedBrokerId: Int = getInt(KafkaConfig.MaxReservedBrokerIdProp)
+  def maxReservedBrokerId: Int = {
+    logger.info("maxReservedBrokerId is called")
+    getInt(KafkaConfig.MaxReservedBrokerIdProp)
+  }
   var brokerId: Int = getInt(KafkaConfig.BrokerIdProp)
   val nodeId: Int = getInt(KafkaConfig.NodeIdProp)
   val initialRegistrationTimeoutMs: Int = getInt(KafkaConfig.InitialBrokerRegistrationTimeoutMsProp)
@@ -2280,7 +2326,7 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
 
     val principalBuilderClass = getClass(KafkaConfig.PrincipalBuilderClassProp)
     require(principalBuilderClass != null, s"${KafkaConfig.PrincipalBuilderClassProp} must be non-null")
-    require(classOf[KafkaPrincipalSerde].isAssignableFrom(principalBuilderClass), 
+    require(classOf[KafkaPrincipalSerde].isAssignableFrom(principalBuilderClass),
       s"${KafkaConfig.PrincipalBuilderClassProp} must implement KafkaPrincipalSerde")
   }
 }
