@@ -1436,8 +1436,15 @@ object KafkaConfig {
   def fromProps(props: Properties): KafkaConfig =
     fromProps(props, true)
 
-  def fromProps(props: Properties, doLog: Boolean): KafkaConfig =
+  def fromProps(props: Properties, doLog: Boolean): KafkaConfig = {
+    // Print log for CTEST
+    val keys = props.keys
+    while (keys.hasMoreElements) {
+      val key = keys.nextElement.toString
+      println("[CTEST][SET-PARAM] " + key + getStackTrace)
+    }
     new KafkaConfig(props, doLog)
+  }
 
   def fromProps(defaults: Properties, overrides: Properties): KafkaConfig =
     fromProps(defaults, overrides, true)
@@ -1449,7 +1456,15 @@ object KafkaConfig {
     fromProps(props, doLog)
   }
 
-  def apply(props: java.util.Map[_, _], doLog: Boolean = true): KafkaConfig = new KafkaConfig(props, doLog)
+  def getStackTrace: String = {
+    var stacktrace = " "
+    for (element <- Thread.currentThread.getStackTrace) {
+      stacktrace = stacktrace.concat(element.getClassName + "\t")
+    }
+    stacktrace
+  }
+
+  def apply(props: java.util.Map[_, _], doLog: Boolean = true) = new KafkaConfig(props, doLog)
 
   private def typeOf(name: String): Option[ConfigDef.Type] = Option(configDef.configKeys.get(name)).map(_.`type`)
 
