@@ -27,7 +27,7 @@ import kafka.log.LogConfig
 import kafka.log.LogConfig.MessageFormatVersion
 import kafka.message.{BrokerCompressionCodec, CompressionCodec, ProducerCompressionCodec, ZStdCompressionCodec}
 import kafka.security.authorizer.AuthorizerUtils
-import kafka.server.KafkaConfig.{ControllerListenerNamesProp, ListenerSecurityProtocolMapProp}
+import kafka.server.KafkaConfig.{ControllerListenerNamesProp, ListenerSecurityProtocolMapProp, getStackTrace}
 import kafka.server.KafkaRaftServer.{BrokerRole, ControllerRole, ProcessRole}
 import kafka.utils.CoreUtils.parseCsvList
 import kafka.utils.{CoreUtils, Logging}
@@ -1441,7 +1441,7 @@ object KafkaConfig {
     val keys = props.keys
     while (keys.hasMoreElements) {
       val key = keys.nextElement.toString
-      println("[CTEST][SET-PARAM] " + key + " " + getStackTrace)
+      println("[CTEST][SET-PARAM] " + key + getStackTrace)
     }
     new KafkaConfig(props, doLog)
   }
@@ -1730,7 +1730,7 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     originalBrokerId
   }
   def setBrokerId(newBrokerId: Int) = {
-    logger.info("[CTEST][SET-PARAM] " + KafkaConfig.BrokerIdProp)
+    logger.info("[CTEST][SET-PARAM] " + KafkaConfig.BrokerIdProp + getStackTrace)
     originalBrokerId = newBrokerId
   }
   def nodeId: Int = {
