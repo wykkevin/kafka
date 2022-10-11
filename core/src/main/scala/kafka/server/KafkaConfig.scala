@@ -1441,7 +1441,7 @@ object KafkaConfig {
     val keys = props.keys
     while (keys.hasMoreElements) {
       val key = keys.nextElement.toString
-      println("[CTEST][SET-PARAM] " + key + getStackTrace)
+      println("[CTEST][SET-PARAM] " + key + " " + getStackTrace)
     }
     new KafkaConfig(props, doLog)
   }
@@ -1459,7 +1459,7 @@ object KafkaConfig {
   def getStackTrace: String = {
     var stacktrace = " "
     for (element <- Thread.currentThread.getStackTrace) {
-      stacktrace = stacktrace.concat(element.getClassName + "\t")
+      stacktrace = stacktrace.concat(element.getClassName + "#")
     }
     stacktrace
   }
