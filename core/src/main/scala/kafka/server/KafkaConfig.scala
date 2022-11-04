@@ -1578,8 +1578,14 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     getInt(KafkaConfig.ZkSessionTimeoutMsProp)
   }
   def zkConnectionTimeoutMs: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkConnectionTimeoutMsProp)
-    Option(getInt(KafkaConfig.ZkConnectionTimeoutMsProp)).map(_.toInt).getOrElse(getInt(KafkaConfig.ZkSessionTimeoutMsProp))
+    val result = Option(getInt(KafkaConfig.ZkConnectionTimeoutMsProp)).map(_.toInt)
+    if (result.isEmpty) {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSessionTimeoutMsProp)
+      getInt(KafkaConfig.ZkSessionTimeoutMsProp)
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkConnectionTimeoutMsProp)
+      result.get
+    }
   }
   def zkEnableSecureAcls: Boolean = {
     logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkEnableSecureAclsProp)
@@ -1837,9 +1843,13 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   def getNumReplicaAlterLogDirsThreads: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumReplicaAlterLogDirsThreadsProp)
-    val numThreads: Integer = Option(getInt(KafkaConfig.NumReplicaAlterLogDirsThreadsProp)).getOrElse(logDirs.size)
-    numThreads
+    val numThreads = Option(getInt(KafkaConfig.NumReplicaAlterLogDirsThreadsProp)).map(_.toInt)
+    if (numThreads.isEmpty) {
+      logDirs.size
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumReplicaAlterLogDirsThreadsProp)
+      numThreads.get
+    }
   }
 
   /************* Metadata Configuration ***********/
@@ -1945,8 +1955,14 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     getInt(KafkaConfig.NumPartitionsProp)
   }
   def logDirs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogDirsProp)
-    CoreUtils.parseCsvList(Option(getString(KafkaConfig.LogDirsProp)).getOrElse(getString(KafkaConfig.LogDirProp)))
+    val result = Option(getString(KafkaConfig.LogDirsProp))
+    if (result.isEmpty) {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogDirProp)
+      CoreUtils.parseCsvList(getString(KafkaConfig.LogDirProp))
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogDirsProp)
+      CoreUtils.parseCsvList(result.get)
+    }
   }
   def logSegmentBytes = {
     logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogSegmentBytesProp)
@@ -2049,16 +2065,34 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     getLong(KafkaConfig.LogDeleteDelayMsProp)
   }
   def logRollTimeMillis: java.lang.Long = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeMillisProp)
-    Option(getLong(KafkaConfig.LogRollTimeMillisProp)).getOrElse(60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeHoursProp))
+    val result = Option(getLong(KafkaConfig.LogRollTimeMillisProp))
+    if (result.isEmpty) {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeHoursProp)
+      60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeHoursProp)
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeMillisProp)
+      result.get
+    }
   }
   def logRollTimeJitterMillis: java.lang.Long = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeJitterMillisProp)
-    Option(getLong(KafkaConfig.LogRollTimeJitterMillisProp)).getOrElse(60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeJitterHoursProp))
+    val result =  Option(getLong(KafkaConfig.LogRollTimeJitterMillisProp))
+    if (result.isEmpty) {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeJitterHoursProp)
+      60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeJitterHoursProp)
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeJitterMillisProp)
+      result.get
+    }
   }
   def logFlushIntervalMs: java.lang.Long = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushIntervalMsProp)
-    Option(getLong(KafkaConfig.LogFlushIntervalMsProp)).getOrElse(getLong(KafkaConfig.LogFlushSchedulerIntervalMsProp))
+    val result = Option(getLong(KafkaConfig.LogFlushIntervalMsProp))
+    if (result.isEmpty) {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushSchedulerIntervalMsProp)
+      getLong(KafkaConfig.LogFlushSchedulerIntervalMsProp)
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushIntervalMsProp)
+      result.get
+    }
   }
   def minInSyncReplicas = {
     logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MinInSyncReplicasProp)
@@ -2356,9 +2390,14 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
 
   /** ********* DelegationToken Configuration **************/
   def delegationTokenSecretKey = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenSecretKeyProp)
-    Option(getPassword(KafkaConfig.DelegationTokenSecretKeyProp))
-      .getOrElse(getPassword(KafkaConfig.DelegationTokenSecretKeyAliasProp))
+    val result = Option(getPassword(KafkaConfig.DelegationTokenSecretKeyProp))
+    if (result.isEmpty) {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenSecretKeyAliasProp)
+      getPassword(KafkaConfig.DelegationTokenSecretKeyAliasProp)
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenSecretKeyProp)
+      result.get
+    }
   }
   val tokenAuthEnabled = (delegationTokenSecretKey != null && !delegationTokenSecretKey.value.isEmpty)
   def delegationTokenMaxLifeMs = {
@@ -2492,16 +2531,25 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   def logRetentionTimeMillis: Long = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionTimeMillisProp)
     val millisInMinute = 60L * 1000L
     val millisInHour = 60L * millisInMinute
 
-    val millis: java.lang.Long =
-      Option(getLong(KafkaConfig.LogRetentionTimeMillisProp)).getOrElse(
-        Option(getInt(KafkaConfig.LogRetentionTimeMinutesProp)) match {
-          case Some(mins) => millisInMinute * mins
-          case None => getInt(KafkaConfig.LogRetentionTimeHoursProp) * millisInHour
-        })
+    val result = Option(getLong(KafkaConfig.LogRetentionTimeMillisProp))
+    val millis: java.lang.Long = if (result.isEmpty) {
+      Option(getInt(KafkaConfig.LogRetentionTimeMinutesProp)) match {
+        case Some(mins) => {
+          logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionTimeMinutesProp)
+          millisInMinute * mins
+        }
+        case None => {
+          logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionTimeHoursProp)
+          getInt(KafkaConfig.LogRetentionTimeHoursProp) * millisInHour
+        }
+      }
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionTimeMillisProp)
+      result.get
+    }
 
     if (millis < 0) return -1
     millis
@@ -2519,8 +2567,13 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     CoreUtils.listenerListToEndPoints(getString(KafkaConfig.ListenersProp), effectiveListenerSecurityProtocolMap)
 
   def controllerListenerNames: Seq[String] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControllerListenerNamesProp)
-    val value = Option(getString(KafkaConfig.ControllerListenerNamesProp)).getOrElse("")
+    val result = Option(getString(KafkaConfig.ControllerListenerNamesProp))
+    val value = if (result.isEmpty) {
+      ""
+    } else {
+      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControllerListenerNamesProp)
+      result.get
+    }
     if (value.isEmpty) {
       Seq.empty
     } else {
@@ -2581,9 +2634,9 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   private def getControlPlaneListenerNameAndSecurityProtocol: Option[(ListenerName, SecurityProtocol)] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControlPlaneListenerNameProp)
     Option(getString(KafkaConfig.ControlPlaneListenerNameProp)) match {
       case Some(name) =>
+        logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControlPlaneListenerNameProp)
         val listenerName = ListenerName.normalised(name)
         val securityProtocol = effectiveListenerSecurityProtocolMap.getOrElse(listenerName,
           throw new ConfigException(s"Listener with ${listenerName.value} defined in " +

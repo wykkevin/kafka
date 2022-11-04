@@ -131,27 +131,29 @@ public class AbstractConfig {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("ctest.xml");
-            Document doc = db.parse(inputStream);
-            doc.getDocumentElement().normalize();
-            NodeList nodeList = doc.getElementsByTagName("configs");
+            if (inputStream != null && inputStream.read() >= 0) {
+                Document doc = db.parse(inputStream);
+                doc.getDocumentElement().normalize();
+                NodeList nodeList = doc.getElementsByTagName("configs");
 
-            Map<String, Object> ctestConfigMap = new HashMap<>();
-            List<String> changedConfigNames = new ArrayList<>();
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    String name = element.getElementsByTagName("name").item(0).getTextContent();
-                    Object value = element.getElementsByTagName("value").item(0).getTextContent();
-                    ctestConfigMap.put(name, value);
-                    changedConfigNames.add(name);
+                Map<String, Object> ctestConfigMap = new HashMap<>();
+                List<String> changedConfigNames = new ArrayList<>();
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Node node = nodeList.item(i);
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        Element element = (Element) node;
+                        String name = element.getElementsByTagName("name").item(0).getTextContent();
+                        Object value = element.getElementsByTagName("value").item(0).getTextContent();
+                        ctestConfigMap.put(name, value);
+                        changedConfigNames.add(name);
+                    }
                 }
-            }
-            ctestConfigMap = (Map<String, Object>) resolveConfigVariables(configProviderProps, ctestConfigMap);
-            ctestConfigMap = definition.parseWithoutErrorChecking(ctestConfigMap);
-            for (Map.Entry<String, Object> ctestConfig : ctestConfigMap.entrySet()) {
-                if (changedConfigNames.contains(ctestConfig.getKey())) {
-                    this.values.put(ctestConfig.getKey(), ctestConfig.getValue());
+                ctestConfigMap = (Map<String, Object>) resolveConfigVariables(configProviderProps, ctestConfigMap);
+                ctestConfigMap = definition.parseWithoutErrorChecking(ctestConfigMap);
+                for (Map.Entry<String, Object> ctestConfig : ctestConfigMap.entrySet()) {
+                    if (changedConfigNames.contains(ctestConfig.getKey())) {
+                        this.values.put(ctestConfig.getKey(), ctestConfig.getValue());
+                    }
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
