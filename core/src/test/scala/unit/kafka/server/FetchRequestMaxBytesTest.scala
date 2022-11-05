@@ -78,7 +78,6 @@ class FetchRequestMaxBytesTest extends BaseRequestTest {
   private def createTopics(): Unit = {
     val topicConfig = new Properties
     topicConfig.setProperty(LogConfig.MinInSyncReplicasProp, 1.toString)
-    topicConfig.setProperty(LogConfig.MessageDownConversionEnableProp, true.toString)
     createTopic(testTopic,
                 numPartitions = 1, 
                 replicationFactor = 1,

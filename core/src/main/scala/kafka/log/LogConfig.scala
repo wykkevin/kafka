@@ -286,6 +286,7 @@ object LogConfig {
                importance: ConfigDef.Importance, doc: String, serverDefaultConfigName: String): LogConfigDef = {
       super.define(name, defType, defaultValue, validator, importance, doc)
       serverDefaultConfigNames.put(name, serverDefaultConfigName)
+      println("[CTEST][SET-PARAM] " + serverDefaultConfigName + getStackTrace)
       this
     }
 
@@ -293,6 +294,7 @@ object LogConfig {
                documentation: String, serverDefaultConfigName: String): LogConfigDef = {
       super.define(name, defType, defaultValue, importance, documentation)
       serverDefaultConfigNames.put(name, serverDefaultConfigName)
+      println("[CTEST][SET-PARAM] " + serverDefaultConfigName + getStackTrace)
       this
     }
 
@@ -300,7 +302,16 @@ object LogConfig {
                serverDefaultConfigName: String): LogConfigDef = {
       super.define(name, defType, importance, documentation)
       serverDefaultConfigNames.put(name, serverDefaultConfigName)
+      println("[CTEST][SET-PARAM] " + serverDefaultConfigName + getStackTrace)
       this
+    }
+
+    def getStackTrace: String = {
+      var stacktrace = " "
+      for (element <- Thread.currentThread.getStackTrace) {
+        stacktrace = stacktrace.concat(element.getClassName + "#")
+      }
+      stacktrace
     }
 
     override def headers = List("Name", "Description", "Type", "Default", "Valid Values", ServerDefaultHeaderName,

@@ -359,8 +359,7 @@ class FetchRequestTest extends BaseFetchRequestTest {
    */
   @Test
   def testDownConversionWithConnectionFailure(): Unit = {
-    val topicConfig = Map(LogConfig.MessageDownConversionEnableProp -> true.toString)
-    val (topicPartition, leaderId) = createTopics(numTopics = 1, numPartitions = 1, configs = topicConfig).head
+    val (topicPartition, leaderId) = createTopics(numTopics = 1, numPartitions = 1).head
     val topicIds = getTopicIds().asJava
     val topicNames = topicIds.asScala.map(_.swap).asJava
 
@@ -435,8 +434,7 @@ class FetchRequestTest extends BaseFetchRequestTest {
       lingerMs = 30 * 1000,
       deliveryTimeoutMs = 60 * 1000)
 
-    val topicConfig = Map(LogConfig.MessageDownConversionEnableProp -> true.toString)
-    val (topicPartition, leaderId) = createTopics(numTopics = 1, numPartitions = 1, configs = topicConfig).head
+    val (topicPartition, leaderId) = createTopics(numTopics = 1, numPartitions = 1).head
     val topic = topicPartition.topic
     val topicIds = getTopicIds().asJava
     val topicNames = topicIds.asScala.map(_.swap).asJava
@@ -658,7 +656,7 @@ class FetchRequestTest extends BaseFetchRequestTest {
   @Test
   def testZStdCompressedRecords(): Unit = {
     // Producer compressed topic
-    val topicConfig = Map(LogConfig.CompressionTypeProp -> ProducerCompressionCodec.name, LogConfig.MessageDownConversionEnableProp -> true.toString)
+    val topicConfig = Map(LogConfig.CompressionTypeProp -> ProducerCompressionCodec.name)
     val (topicPartition, leaderId) = createTopics(numTopics = 1, numPartitions = 1, configs = topicConfig).head
     val topicIds = getTopicIds().asJava
     val topicNames = topicIds.asScala.map(_.swap).asJava
