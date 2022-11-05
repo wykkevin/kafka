@@ -172,11 +172,6 @@ abstract class KafkaServerTestHarness extends QuorumTestHarness {
     listenerName: ListenerName = listenerName,
     adminClientConfig: Properties = new Properties
   ): scala.collection.immutable.Map[Int, Int] = {
-    val keys = topicConfig.keys
-    while (keys.hasMoreElements) {
-      val key = keys.nextElement.toString
-      logger.info("[CTEST][SET-PARAM] " + key + getStackTrace)
-    }
     if (isKRaftTest()) {
       resource(createAdminClient(brokers, listenerName, adminClientConfig)) { admin =>
         TestUtils.createTopicWithAdmin(
@@ -198,14 +193,6 @@ abstract class KafkaServerTestHarness extends QuorumTestHarness {
         topicConfig = topicConfig
       )
     }
-  }
-
-  def getStackTrace: String = {
-    var stacktrace = " "
-    for (element <- Thread.currentThread.getStackTrace) {
-      stacktrace = stacktrace.concat(element.getClassName + "#")
-    }
-    stacktrace
   }
 
   /**
