@@ -132,7 +132,7 @@ public class AbstractConfig {
             DocumentBuilder db = dbf.newDocumentBuilder();
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("ctest.xml");
             if (inputStream != null && inputStream.read() >= 0) {
-                Document doc = db.parse(inputStream);
+                Document doc = db.parse(getClass().getClassLoader().getResourceAsStream("ctest.xml"));
                 doc.getDocumentElement().normalize();
                 NodeList nodeList = doc.getElementsByTagName("configs");
 
