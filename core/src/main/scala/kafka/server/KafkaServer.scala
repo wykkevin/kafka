@@ -224,7 +224,7 @@ class KafkaServer(
             s"The broker is trying to join the wrong cluster. Configured zookeeper.connect may be wrong.")
 
         /* generate brokerId */
-        config.setBrokerId(getOrGenerateBrokerId(preloadedBrokerMetadataCheckpoint))
+        config.brokerId = getOrGenerateBrokerId(preloadedBrokerMetadataCheckpoint)
         logContext = new LogContext(s"[KafkaServer id=${config.brokerId}] ")
         this.logIdent = logContext.logPrefix
 
