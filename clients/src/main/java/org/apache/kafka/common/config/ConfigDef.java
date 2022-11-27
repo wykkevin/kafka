@@ -480,30 +480,16 @@ public class ConfigDef {
         // parse all known keys
         Map<String, Object> values = new HashMap<>();
         for (ConfigKey key : configKeys.values())
-            values.put(key.name, parseValue(key, props.get(key.name), props.containsKey(key.name), false));
+            values.put(key.name, parseValue(key, props.get(key.name), props.containsKey(key.name)));
         return values;
     }
 
-    public Map<String, Object> parseWithoutErrorChecking(Map<?, ?> props) {
-        // Check all configurations are defined
-        List<String> undefinedConfigKeys = undefinedDependentConfigs();
-        if (!undefinedConfigKeys.isEmpty()) {
-            String joined = Utils.join(undefinedConfigKeys, ",");
-            throw new ConfigException("Some configurations in are referred in the dependents, but not defined: " + joined);
-        }
-        // parse all known keys
-        Map<String, Object> values = new HashMap<>();
-        for (ConfigKey key : configKeys.values())
-            values.put(key.name, parseValue(key, props.get(key.name), props.containsKey(key.name), true));
-        return values;
-    }
-
-    Object parseValue(ConfigKey key, Object value, boolean isSet, boolean shouldIgnoreErrors) {
+    Object parseValue(ConfigKey key, Object value, boolean isSet) {
         Object parsedValue;
         if (isSet) {
             parsedValue = parseType(key.name, value, key.type);
-        // props map doesn't contain setting, the key is required because no default value specified - its an error
-        } else if (NO_DEFAULT_VALUE.equals(key.defaultValue) && !shouldIgnoreErrors) {
+            // props map doesn't contain setting, the key is required because no default value specified - its an error
+        } else if (NO_DEFAULT_VALUE.equals(key.defaultValue)) {
             throw new ConfigException("Missing required configuration \"" + key.name + "\" which has no default value.");
         } else {
             // otherwise assign setting its default value
@@ -988,8 +974,8 @@ public class ConfigDef {
 
         private CaseInsensitiveValidString(List<String> validStrings) {
             this.validStrings = validStrings.stream()
-                .map(s -> s.toUpperCase(Locale.ROOT))
-                .collect(Collectors.toSet());
+                    .map(s -> s.toUpperCase(Locale.ROOT))
+                    .collect(Collectors.toSet());
         }
 
         public static CaseInsensitiveValidString in(String... validStrings) {
@@ -1452,8 +1438,8 @@ public class ConfigDef {
 
     private int compare(ConfigKey k1, ConfigKey k2, Map<String, Integer> groupOrd) {
         int cmp = k1.group == null
-            ? (k2.group == null ? 0 : -1)
-            : (k2.group == null ? 1 : Integer.compare(groupOrd.get(k1.group), groupOrd.get(k2.group)));
+                ? (k2.group == null ? 0 : -1)
+                : (k2.group == null ? 1 : Integer.compare(groupOrd.get(k1.group), groupOrd.get(k2.group)));
         if (cmp == 0) {
             cmp = Integer.compare(k1.orderInGroup, k2.orderInGroup);
             if (cmp == 0) {

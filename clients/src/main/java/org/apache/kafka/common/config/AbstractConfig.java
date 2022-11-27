@@ -23,17 +23,7 @@ import org.apache.kafka.common.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.kafka.common.config.provider.ConfigProvider;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,41 +115,6 @@ public class AbstractConfig {
         for (Map.Entry<String, Object> update : configUpdates.entrySet()) {
             this.values.put(update.getKey(), update.getValue());
         }
-
-        // Insert ctest configs
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("ctest.xml");
-            if (inputStream != null && inputStream.read() >= 0) {
-                Document doc = db.parse(getClass().getClassLoader().getResourceAsStream("ctest.xml"));
-                doc.getDocumentElement().normalize();
-                NodeList nodeList = doc.getElementsByTagName("configs");
-
-                Map<String, Object> ctestConfigMap = new HashMap<>();
-                List<String> changedConfigNames = new ArrayList<>();
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    Node node = nodeList.item(i);
-                    if (node.getNodeType() == Node.ELEMENT_NODE) {
-                        Element element = (Element) node;
-                        String name = element.getElementsByTagName("name").item(0).getTextContent();
-                        Object value = element.getElementsByTagName("value").item(0).getTextContent();
-                        ctestConfigMap.put(name, value);
-                        changedConfigNames.add(name);
-                    }
-                }
-                ctestConfigMap = (Map<String, Object>) resolveConfigVariables(configProviderProps, ctestConfigMap);
-                ctestConfigMap = definition.parseWithoutErrorChecking(ctestConfigMap);
-                for (Map.Entry<String, Object> ctestConfig : ctestConfigMap.entrySet()) {
-                    if (changedConfigNames.contains(ctestConfig.getKey())) {
-                        this.values.put(ctestConfig.getKey(), ctestConfig.getValue());
-                    }
-                }
-            }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-
         definition.parse(this.values);
         this.definition = definition;
         if (doLog)
@@ -353,12 +308,12 @@ public class AbstractConfig {
                 String keyWithNoPrefix = entry.getKey().substring(prefix.length());
                 ConfigDef.ConfigKey configKey = definition.configKeys().get(keyWithNoPrefix);
                 if (configKey != null)
-                    result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true, false));
+                    result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true));
                 else {
                     String keyWithNoSecondaryPrefix = keyWithNoPrefix.substring(keyWithNoPrefix.indexOf('.') + 1);
                     configKey = definition.configKeys().get(keyWithNoSecondaryPrefix);
                     if (configKey != null)
-                        result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true, false));
+                        result.put(keyWithNoPrefix, definition.parseValue(configKey, entry.getValue(), true));
                 }
             }
         }
@@ -383,7 +338,7 @@ public class AbstractConfig {
             for (Map.Entry<String, ?> entry : withPrefix.entrySet()) {
                 ConfigDef.ConfigKey configKey = definition.configKeys().get(entry.getKey());
                 if (configKey != null)
-                    result.put(entry.getKey(), definition.parseValue(configKey, entry.getValue(), true, false));
+                    result.put(entry.getKey(), definition.parseValue(configKey, entry.getValue(), true));
             }
 
             return result;
