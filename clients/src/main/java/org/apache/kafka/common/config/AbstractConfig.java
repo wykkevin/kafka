@@ -134,7 +134,7 @@ public class AbstractConfig {
             if (inputStream != null && inputStream.read() >= 0) {
                 Document doc = db.parse(getClass().getClassLoader().getResourceAsStream("ctest.xml"));
                 doc.getDocumentElement().normalize();
-                NodeList nodeList = doc.getElementsByTagName("configs");
+                NodeList nodeList = doc.getElementsByTagName("property");
 
                 Map<String, Object> ctestConfigMap = new HashMap<>();
                 List<String> changedConfigNames = new ArrayList<>();
