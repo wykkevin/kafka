@@ -62,13 +62,13 @@ public class WordCount {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
-            @Override
-            public void run() {
-                streams.close();
-                latch.countDown();
-            }
-        });
+//        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
+//            @Override
+//            public void run() {
+//                streams.close();
+//                latch.countDown();
+//            }
+//        });
 
         try {
             streams.start();

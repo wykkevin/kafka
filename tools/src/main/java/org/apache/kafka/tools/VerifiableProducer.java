@@ -539,19 +539,19 @@ public class VerifiableProducer implements AutoCloseable {
             ThroughputThrottler throttler = new ThroughputThrottler(producer.throughput, startMs);
 
             // Can't use `Exit.addShutdownHook` here because it didn't exist until 2.5.0.
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                // Trigger main thread to stop producing messages
-                producer.stopProducing = true;
-
-                // Flush any remaining messages
-                producer.close();
-
-                // Print a summary
-                long stopMs = System.currentTimeMillis();
-                double avgThroughput = 1000 * ((producer.numAcked) / (double) (stopMs - startMs));
-
-                producer.printJson(new ToolData(producer.numSent, producer.numAcked, producer.throughput, avgThroughput));
-            }, "verifiable-producer-shutdown-hook"));
+//            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//                // Trigger main thread to stop producing messages
+//                producer.stopProducing = true;
+//
+//                // Flush any remaining messages
+//                producer.close();
+//
+//                // Print a summary
+//                long stopMs = System.currentTimeMillis();
+//                double avgThroughput = 1000 * ((producer.numAcked) / (double) (stopMs - startMs));
+//
+//                producer.printJson(new ToolData(producer.numSent, producer.numAcked, producer.throughput, avgThroughput));
+//            }, "verifiable-producer-shutdown-hook"));
 
             producer.run(throttler);
         } catch (ArgumentParserException e) {

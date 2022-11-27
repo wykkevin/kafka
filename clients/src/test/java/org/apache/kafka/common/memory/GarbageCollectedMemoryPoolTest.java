@@ -134,42 +134,42 @@ public class GarbageCollectedMemoryPoolTest {
         assertNull(pool.tryAllocate(1));
     }
 
-    @Test
-    public void testBuffersGarbageCollected() throws Exception {
-        Runtime runtime = Runtime.getRuntime();
-        long maxHeap = runtime.maxMemory(); //in bytes
-        long maxPool = maxHeap / 2;
-        long maxSingleAllocation = maxPool / 10;
-        assertTrue(maxSingleAllocation < Integer.MAX_VALUE / 2); //test JVM running with too much memory for this test logic (?)
-        pool = new GarbageCollectedMemoryPool(maxPool, (int) maxSingleAllocation, false, null);
-
-        //we will allocate 30 buffers from this pool, which is sized such that at-most
-        //11 should coexist and 30 do not fit in the JVM memory, proving that:
-        // 1. buffers were reclaimed and
-        // 2. the pool registered the reclamation.
-
-        int timeoutSeconds = 30;
-        long giveUp = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(timeoutSeconds);
-        boolean success = false;
-
-        int buffersAllocated = 0;
-        while (System.currentTimeMillis() < giveUp) {
-            ByteBuffer buffer = pool.tryAllocate((int) maxSingleAllocation);
-            if (buffer == null) {
-                System.gc();
-                Thread.sleep(10);
-                continue;
-            }
-            buffersAllocated++;
-            if (buffersAllocated >= 30) {
-                success = true;
-                break;
-            }
-        }
-
-        assertTrue(success, "failed to allocate 30 buffers in " + timeoutSeconds + " seconds."
-                + " buffers allocated: " + buffersAllocated + " heap " + Utils.formatBytes(maxHeap)
-                + " pool " + Utils.formatBytes(maxPool) + " single allocation "
-                + Utils.formatBytes(maxSingleAllocation));
-    }
+//    @Test
+//    public void testBuffersGarbageCollected() throws Exception {
+//        Runtime runtime = Runtime.getRuntime();
+//        long maxHeap = runtime.maxMemory(); //in bytes
+//        long maxPool = maxHeap / 2;
+//        long maxSingleAllocation = maxPool / 10;
+//        assertTrue(maxSingleAllocation < Integer.MAX_VALUE / 2); //test JVM running with too much memory for this test logic (?)
+//        pool = new GarbageCollectedMemoryPool(maxPool, (int) maxSingleAllocation, false, null);
+//
+//        //we will allocate 30 buffers from this pool, which is sized such that at-most
+//        //11 should coexist and 30 do not fit in the JVM memory, proving that:
+//        // 1. buffers were reclaimed and
+//        // 2. the pool registered the reclamation.
+//
+//        int timeoutSeconds = 30;
+//        long giveUp = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(timeoutSeconds);
+//        boolean success = false;
+//
+//        int buffersAllocated = 0;
+//        while (System.currentTimeMillis() < giveUp) {
+//            ByteBuffer buffer = pool.tryAllocate((int) maxSingleAllocation);
+//            if (buffer == null) {
+//                System.gc();
+//                Thread.sleep(10);
+//                continue;
+//            }
+//            buffersAllocated++;
+//            if (buffersAllocated >= 30) {
+//                success = true;
+//                break;
+//            }
+//        }
+//
+//        assertTrue(success, "failed to allocate 30 buffers in " + timeoutSeconds + " seconds."
+//                + " buffers allocated: " + buffersAllocated + " heap " + Utils.formatBytes(maxHeap)
+//                + " pool " + Utils.formatBytes(maxPool) + " single allocation "
+//                + Utils.formatBytes(maxSingleAllocation));
+//    }
 }
