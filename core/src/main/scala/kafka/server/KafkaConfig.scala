@@ -1,19 +1,19 @@
 /**
-  * Licensed to the Apache Software Foundation (ASF) under one or more
-  * contributor license agreements.  See the NOTICE file distributed with
-  * this work for additional information regarding copyright ownership.
-  * The ASF licenses this file to You under the Apache License, Version 2.0
-  * (the "License"); you may not use this file except in compliance with
-  * the License.  You may obtain a copy of the License at
-  *
-  * http://www.apache.org/licenses/LICENSE-2.0
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package kafka.server
 
@@ -27,7 +27,7 @@ import kafka.log.LogConfig
 import kafka.log.LogConfig.MessageFormatVersion
 import kafka.message.{BrokerCompressionCodec, CompressionCodec, ProducerCompressionCodec, ZStdCompressionCodec}
 import kafka.security.authorizer.AuthorizerUtils
-import kafka.server.KafkaConfig.{ControllerListenerNamesProp, ListenerSecurityProtocolMapProp, getStackTrace}
+import kafka.server.KafkaConfig.{ControllerListenerNamesProp, ListenerSecurityProtocolMapProp}
 import kafka.server.KafkaRaftServer.{BrokerRole, ControllerRole, ProcessRole}
 import kafka.utils.CoreUtils.parseCsvList
 import kafka.utils.{CoreUtils, Logging}
@@ -260,7 +260,7 @@ object Defaults {
   val SslClientAuthenticationValidValues = SslClientAuth.VALUES.asScala.map(v => v.toString().toLowerCase(Locale.ROOT)).asJava.toArray(new Array[String](0))
   val SslPrincipalMappingRules = BrokerSecurityConfigs.DEFAULT_SSL_PRINCIPAL_MAPPING_RULES
 
-    /** ********* General Security configuration ***********/
+  /** ********* General Security configuration ***********/
   val ConnectionsMaxReauthMsDefault = 0L
   val DefaultServerMaxMaxReceiveSize = BrokerSecurityConfigs.DEFAULT_SASL_SERVER_MAX_RECEIVE_SIZE
   val DefaultPrincipalBuilder = classOf[DefaultKafkaPrincipalBuilder]
@@ -366,7 +366,7 @@ object KafkaConfig {
           case _ => kafkaPropValue.toString
         }
         case _ => kafkaPropValue.toString
-    })
+      })
   }
 
   // For ZooKeeper TLS client authentication to be enabled the client must (at a minimum) configure itself as using TLS
@@ -654,10 +654,10 @@ object KafkaConfig {
   /* Documentation */
   /** ********* Zookeeper Configuration ***********/
   val ZkConnectDoc = "Specifies the ZooKeeper connection string in the form <code>hostname:port</code> where host and port are the " +
-  "host and port of a ZooKeeper server. To allow connecting through other ZooKeeper nodes when that ZooKeeper machine is " +
-  "down you can also specify multiple hosts in the form <code>hostname1:port1,hostname2:port2,hostname3:port3</code>.\n" +
-  "The server can also have a ZooKeeper chroot path as part of its ZooKeeper connection string which puts its data under some path in the global ZooKeeper namespace. " +
-  "For example to give a chroot path of <code>/chroot/path</code> you would give the connection string as <code>hostname1:port1,hostname2:port2,hostname3:port3/chroot/path</code>."
+    "host and port of a ZooKeeper server. To allow connecting through other ZooKeeper nodes when that ZooKeeper machine is " +
+    "down you can also specify multiple hosts in the form <code>hostname1:port1,hostname2:port2,hostname3:port3</code>.\n" +
+    "The server can also have a ZooKeeper chroot path as part of its ZooKeeper connection string which puts its data under some path in the global ZooKeeper namespace. " +
+    "For example to give a chroot path of <code>/chroot/path</code> you would give the connection string as <code>hostname1:port1,hostname2:port2,hostname3:port3/chroot/path</code>."
   val ZkSessionTimeoutMsDoc = "Zookeeper session timeout"
   val ZkConnectionTimeoutMsDoc = "The max time that the client waits to establish a connection to zookeeper. If not set, the value in " + ZkSessionTimeoutMsProp + " is used"
   val ZkEnableSecureAclsDoc = "Set client to use secure ACLs"
@@ -701,8 +701,8 @@ object KafkaConfig {
   val BrokerIdGenerationEnableDoc = s"Enable automatic broker id generation on the server. When enabled the value configured for $MaxReservedBrokerIdProp should be reviewed."
   val MaxReservedBrokerIdDoc = "Max number that can be used for a broker.id"
   val BrokerIdDoc = "The broker id for this server. If unset, a unique broker id will be generated." +
-  "To avoid conflicts between zookeeper generated broker id's and user configured broker id's, generated broker ids " +
-  "start from " + MaxReservedBrokerIdProp + " + 1."
+    "To avoid conflicts between zookeeper generated broker id's and user configured broker id's, generated broker ids " +
+    "start from " + MaxReservedBrokerIdProp + " + 1."
   val MessageMaxBytesDoc = TopicConfig.MAX_MESSAGE_BYTES_DOC +
     s"This can be set per topic with the topic level <code>${TopicConfig.MAX_MESSAGE_BYTES_CONFIG}</code> config."
   val NumNetworkThreadsDoc = "The number of threads that the server uses for receiving requests from the network and sending responses to the network"
@@ -746,9 +746,9 @@ object KafkaConfig {
   val AuthorizerClassNameDoc = s"The fully qualified name of a class that implements <code>${classOf[Authorizer].getName}</code>" +
     " interface, which is used by the broker for authorization."
   val EarlyStartListenersDoc = "A comma-separated list of listener names which may be started before the authorizer has finished " +
-   "initialization. This is useful when the authorizer is dependent on the cluster itself for bootstrapping, as is the case for " +
-   "the StandardAuthorizer (which stores ACLs in the metadata log.) By default, all listeners included in controller.listener.names " +
-   "will also be early start listeners. A listener should not appear in this list if it accepts external traffic."
+    "initialization. This is useful when the authorizer is dependent on the cluster itself for bootstrapping, as is the case for " +
+    "the StandardAuthorizer (which stores ACLs in the metadata log.) By default, all listeners included in controller.listener.names " +
+    "will also be early start listeners. A listener should not appear in this list if it accepts external traffic."
 
   /** ********* Socket Server Configuration ***********/
   val ListenersDoc = "Listener List - Comma-separated list of URIs we will listen on and the listener names." +
@@ -844,7 +844,7 @@ object KafkaConfig {
   val LogCleanerDedupeBufferSizeDoc = "The total memory used for log deduplication across all cleaner threads"
   val LogCleanerIoBufferSizeDoc = "The total memory used for log cleaner I/O buffers across all cleaner threads"
   val LogCleanerDedupeBufferLoadFactorDoc = "Log cleaner dedupe buffer load factor. The percentage full the dedupe buffer can become. A higher value " +
-  "will allow more log to be cleaned at once but will lead to more hash collisions"
+    "will allow more log to be cleaned at once but will lead to more hash collisions"
   val LogCleanerBackoffMsDoc = "The amount of time to sleep when there are no logs to clean"
   val LogCleanerMinCleanRatioDoc = "The minimum ratio of dirty log to total log for a log to eligible for cleaning. " +
     "If the " + LogCleanerMaxCompactionLagMsProp + " or the " + LogCleanerMinCompactionLagMsProp +
@@ -902,7 +902,7 @@ object KafkaConfig {
   val ControllerMessageQueueSizeDoc = "The buffer size for controller-to-broker-channels"
   val DefaultReplicationFactorDoc = "The default replication factors for automatically created topics"
   val ReplicaLagTimeMaxMsDoc = "If a follower hasn't sent any fetch requests or hasn't consumed up to the leaders log end offset for at least this time," +
-  " the leader will remove the follower from isr"
+    " the leader will remove the follower from isr"
   val ReplicaSocketTimeoutMsDoc = "The socket timeout for network requests. Its value should be at least replica.fetch.wait.max.ms"
   val ReplicaSocketReceiveBufferBytesDoc = "The socket receive buffer for network requests"
   val ReplicaFetchMaxBytesDoc = "The number of bytes of messages to attempt to fetch for each partition. This is not an absolute maximum, " +
@@ -910,7 +910,7 @@ object KafkaConfig {
     "to ensure that progress can be made. The maximum record batch size accepted by the broker is defined via " +
     "<code>message.max.bytes</code> (broker config) or <code>max.message.bytes</code> (topic config)."
   val ReplicaFetchWaitMaxMsDoc = "The maximum wait time for each fetcher request issued by follower replicas. This value should always be less than the " +
-  "replica.lag.time.max.ms at all times to prevent frequent shrinking of ISR for low throughput topics"
+    "replica.lag.time.max.ms at all times to prevent frequent shrinking of ISR for low throughput topics"
   val ReplicaFetchMinBytesDoc = "Minimum bytes expected for each fetch response. If not enough bytes, wait up to <code>replica.fetch.wait.max.ms</code> (broker config)."
   val ReplicaFetchResponseMaxBytesDoc = "Maximum bytes expected for the entire fetch response. Records are fetched in batches, " +
     "and if the first record batch in the first non-empty partition of the fetch is larger than this value, the record batch " +
@@ -918,9 +918,9 @@ object KafkaConfig {
     "record batch size accepted by the broker is defined via <code>message.max.bytes</code> (broker config) or " +
     "<code>max.message.bytes</code> (topic config)."
   val NumReplicaFetchersDoc = "Number of fetcher threads used to replicate records from each source broker. The total number of fetchers " +
-  "on each broker is bound by <code>num.replica.fetchers</code> multiplied by the number of brokers in the cluster." +
-  "Increasing this value can increase the degree of I/O parallelism in the follower and leader broker at the cost " +
-  "of higher CPU and memory utilization."
+    "on each broker is bound by <code>num.replica.fetchers</code> multiplied by the number of brokers in the cluster." +
+    "Increasing this value can increase the degree of I/O parallelism in the follower and leader broker at the cost " +
+    "of higher CPU and memory utilization."
   val ReplicaFetchBackoffMsDoc = "The amount of time to sleep when fetch partition error occurs."
   val ReplicaHighWatermarkCheckpointIntervalMsDoc = "The frequency with which the high watermark is saved out to disk"
   val FetchPurgatoryPurgeIntervalRequestsDoc = "The purge interval (in number of requests) of the fetch request purgatory"
@@ -934,8 +934,8 @@ object KafkaConfig {
     s"${SecurityProtocol.names.asScala.mkString(", ")}. It is an error to set this and $InterBrokerListenerNameProp " +
     "properties at the same time."
   val InterBrokerProtocolVersionDoc = "Specify which version of the inter-broker protocol will be used.\n" +
-  " This is typically bumped after all brokers were upgraded to a new version.\n" +
-  " Example of some valid values are: 0.8.0, 0.8.1, 0.8.1.1, 0.8.2, 0.8.2.0, 0.8.2.1, 0.9.0.0, 0.9.0.1 Check MetadataVersion for the full list."
+    " This is typically bumped after all brokers were upgraded to a new version.\n" +
+    " Example of some valid values are: 0.8.0, 0.8.1, 0.8.1.1, 0.8.2, 0.8.2.0, 0.8.2.1, 0.9.0.0, 0.9.0.1 Check MetadataVersion for the full list."
   val InterBrokerListenerNameDoc = s"Name of listener used for communication between brokers. If this is unset, the listener name is defined by $InterBrokerSecurityProtocolProp. " +
     s"It is an error to set this and $InterBrokerSecurityProtocolProp properties at the same time."
   val ReplicaSelectorClassDoc = "The fully qualified class name that implements ReplicaSelector. This is used by the broker to find the preferred read replica. By default, we use an implementation that returns the leader."
@@ -952,7 +952,7 @@ object KafkaConfig {
   val OffsetMetadataMaxSizeDoc = "The maximum size for a metadata entry associated with an offset commit"
   val OffsetsLoadBufferSizeDoc = "Batch size for reading from the offsets segments when loading offsets into the cache (soft-limit, overridden if records are too large)."
   val OffsetsTopicReplicationFactorDoc = "The replication factor for the offsets topic (set higher to ensure availability). " +
-  "Internal topic creation will fail until the cluster size meets this replication factor requirement."
+    "Internal topic creation will fail until the cluster size meets this replication factor requirement."
   val OffsetsTopicPartitionsDoc = "The number of partitions for the offset commit topic (should not change after deployment)"
   val OffsetsTopicSegmentBytesDoc = "The offsets topic segment bytes should be kept relatively small in order to facilitate faster log compaction and cache loads"
   val OffsetsTopicCompressionCodecDoc = "Compression codec for the offsets topic - compression may be used to achieve \"atomic\" commits"
@@ -963,7 +963,7 @@ object KafkaConfig {
     "also when a topic is deleted via the delete-topic request, upon propagated metadata update any group's committed offsets for that topic will also be deleted without extra retention period."
   val OffsetsRetentionCheckIntervalMsDoc = "Frequency at which to check for stale offsets"
   val OffsetCommitTimeoutMsDoc = "Offset commit will be delayed until all replicas for the offsets topic receive the commit " +
-  "or this timeout is reached. This is similar to the producer request timeout."
+    "or this timeout is reached. This is similar to the producer request timeout."
   val OffsetCommitRequiredAcksDoc = "The required acks before the commit can be accepted. In general, the default (-1) should not be overridden"
   /** ********* Transaction management configuration ***********/
   val TransactionalIdExpirationMsDoc = "The time in ms that the transaction coordinator will wait without receiving any transaction status updates " +
@@ -1005,8 +1005,8 @@ object KafkaConfig {
 
   val DeleteTopicEnableDoc = "Enables delete topic. Delete topic through the admin tool will have no effect if this config is turned off"
   val CompressionTypeDoc = "Specify the final compression type for a given topic. This configuration accepts the standard compression codecs " +
-  "('gzip', 'snappy', 'lz4', 'zstd'). It additionally accepts 'uncompressed' which is equivalent to no compression; and " +
-  "'producer' which means retain the original compression codec set by the producer."
+    "('gzip', 'snappy', 'lz4', 'zstd'). It additionally accepts 'uncompressed' which is equivalent to no compression; and " +
+    "'producer' which means retain the original compression codec set by the producer."
 
   /** ********* Kafka Metrics Configuration ***********/
   val MetricSampleWindowMsDoc = CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_DOC
@@ -1436,15 +1436,8 @@ object KafkaConfig {
   def fromProps(props: Properties): KafkaConfig =
     fromProps(props, true)
 
-  def fromProps(props: Properties, doLog: Boolean): KafkaConfig = {
-    // Print log for CTEST
-    val keys = props.keys
-    while (keys.hasMoreElements) {
-      val key = keys.nextElement.toString
-      println("[CTEST][SET-PARAM] " + key + getStackTrace)
-    }
+  def fromProps(props: Properties, doLog: Boolean): KafkaConfig =
     new KafkaConfig(props, doLog)
-  }
 
   def fromProps(defaults: Properties, overrides: Properties): KafkaConfig =
     fromProps(defaults, overrides, true)
@@ -1456,15 +1449,7 @@ object KafkaConfig {
     fromProps(props, doLog)
   }
 
-  def getStackTrace: String = {
-    var stacktrace = " "
-    for (element <- Thread.currentThread.getStackTrace) {
-      stacktrace = stacktrace.concat(element.getClassName + "#")
-    }
-    stacktrace
-  }
-
-  def apply(props: java.util.Map[_, _], doLog: Boolean = true) = new KafkaConfig(props, doLog)
+  def apply(props: java.util.Map[_, _], doLog: Boolean = true): KafkaConfig = new KafkaConfig(props, doLog)
 
   private def typeOf(name: String): Option[ConfigDef.Type] = Option(configDef.configKeys.get(name)).map(_.`type`)
 
@@ -1569,32 +1554,12 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     super.valuesWithPrefixOverride(prefix)
 
   /** ********* Zookeeper Configuration ***********/
-  def zkConnect: String = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkConnectProp)
-    getString(KafkaConfig.ZkConnectProp)
-  }
-  def zkSessionTimeoutMs: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSessionTimeoutMsProp)
-    getInt(KafkaConfig.ZkSessionTimeoutMsProp)
-  }
-  def zkConnectionTimeoutMs: Int = {
-    val result = Option(getInt(KafkaConfig.ZkConnectionTimeoutMsProp)).map(_.toInt)
-    if (result.isEmpty) {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSessionTimeoutMsProp)
-      getInt(KafkaConfig.ZkSessionTimeoutMsProp)
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkConnectionTimeoutMsProp)
-      result.get
-    }
-  }
-  def zkEnableSecureAcls: Boolean = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkEnableSecureAclsProp)
-    getBoolean(KafkaConfig.ZkEnableSecureAclsProp)
-  }
-  def zkMaxInFlightRequests: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkMaxInFlightRequestsProp)
-    getInt(KafkaConfig.ZkMaxInFlightRequestsProp)
-  }
+  val zkConnect: String = getString(KafkaConfig.ZkConnectProp)
+  val zkSessionTimeoutMs: Int = getInt(KafkaConfig.ZkSessionTimeoutMsProp)
+  val zkConnectionTimeoutMs: Int =
+    Option(getInt(KafkaConfig.ZkConnectionTimeoutMsProp)).map(_.toInt).getOrElse(getInt(KafkaConfig.ZkSessionTimeoutMsProp))
+  val zkEnableSecureAcls: Boolean = getBoolean(KafkaConfig.ZkEnableSecureAclsProp)
+  val zkMaxInFlightRequests: Int = getInt(KafkaConfig.ZkMaxInFlightRequestsProp)
 
   private val _remoteLogManagerConfig = new RemoteLogManagerConfig(this)
   def remoteLogManagerConfig = _remoteLogManagerConfig
@@ -1642,62 +1607,18 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     }
   }
 
-  def zkSslClientEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslClientEnableProp)
-    zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslClientEnableProp)
-  }
-
-  def zkClientCnxnSocketClassName = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkClientCnxnSocketProp)
-    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkClientCnxnSocketProp)
-  }
-
-  def zkSslKeyStoreLocation = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslKeyStoreLocationProp)
-    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreLocationProp)
-  }
-
-  def zkSslKeyStorePassword = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslKeyStorePasswordProp)
-    zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslKeyStorePasswordProp)
-  }
-
-  def zkSslKeyStoreType = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslKeyStoreTypeProp)
-    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreTypeProp)
-  }
-
-  def zkSslTrustStoreLocation = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslTrustStoreLocationProp)
-    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreLocationProp)
-  }
-
-  def zkSslTrustStorePassword = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslTrustStorePasswordProp)
-    zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslTrustStorePasswordProp)
-  }
-
-  def zkSslTrustStoreType = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslTrustStoreTypeProp)
-    zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreTypeProp)
-  }
-
-  def ZkSslProtocol = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslProtocolProp)
-    zkStringConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslProtocolProp)
-  }
-
-  def ZkSslEnabledProtocols = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslEnabledProtocolsProp)
-    zkListConfigOrSystemProperty(KafkaConfig.ZkSslEnabledProtocolsProp)
-  }
-
-  def ZkSslCipherSuites = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslCipherSuitesProp)
-    zkListConfigOrSystemProperty(KafkaConfig.ZkSslCipherSuitesProp)
-  }
+  val zkSslClientEnable = zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslClientEnableProp)
+  val zkClientCnxnSocketClassName = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkClientCnxnSocketProp)
+  val zkSslKeyStoreLocation = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreLocationProp)
+  val zkSslKeyStorePassword = zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslKeyStorePasswordProp)
+  val zkSslKeyStoreType = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslKeyStoreTypeProp)
+  val zkSslTrustStoreLocation = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreLocationProp)
+  val zkSslTrustStorePassword = zkPasswordConfigOrSystemProperty(KafkaConfig.ZkSslTrustStorePasswordProp)
+  val zkSslTrustStoreType = zkOptionalStringConfigOrSystemProperty(KafkaConfig.ZkSslTrustStoreTypeProp)
+  val ZkSslProtocol = zkStringConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslProtocolProp)
+  val ZkSslEnabledProtocols = zkListConfigOrSystemProperty(KafkaConfig.ZkSslEnabledProtocolsProp)
+  val ZkSslCipherSuites = zkListConfigOrSystemProperty(KafkaConfig.ZkSslCipherSuitesProp)
   val ZkSslEndpointIdentificationAlgorithm = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslEndpointIdentificationAlgorithmProp)
     // Use the system property if it exists and the Kafka config value was defaulted rather than actually provided
     // Need to translate any system property value from true/false to HTTPS/<blank>
     val kafkaProp = KafkaConfig.ZkSslEndpointIdentificationAlgorithmProp
@@ -1712,55 +1633,21 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
       }
     }
   }
-  def ZkSslCrlEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslCrlEnableProp)
-    zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslCrlEnableProp)
-  }
-  def ZkSslOcspEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ZkSslOcspEnableProp)
-    zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslOcspEnableProp)
-  }
+  val ZkSslCrlEnable = zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslCrlEnableProp)
+  val ZkSslOcspEnable = zkBooleanConfigOrSystemPropertyWithDefaultValue(KafkaConfig.ZkSslOcspEnableProp)
   /** ********* General Configuration ***********/
-  def brokerIdGenerationEnable: Boolean = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.BrokerIdGenerationEnableProp)
-    getBoolean(KafkaConfig.BrokerIdGenerationEnableProp)
-  }
-  def maxReservedBrokerId: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MaxReservedBrokerIdProp)
-    getInt(KafkaConfig.MaxReservedBrokerIdProp)
-  }
-
-  var originalBrokerId: Int = getInt(KafkaConfig.BrokerIdProp)
-  def brokerId: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.BrokerIdProp)
-    originalBrokerId
-  }
-  def setBrokerId(newBrokerId: Int) = {
-    logger.info("[CTEST][SET-PARAM] " + KafkaConfig.BrokerIdProp + getStackTrace)
-    originalBrokerId = newBrokerId
-  }
-  def nodeId: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NodeIdProp)
-    getInt(KafkaConfig.NodeIdProp)
-  }
-  def initialRegistrationTimeoutMs: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.InitialBrokerRegistrationTimeoutMsProp)
-    getInt(KafkaConfig.InitialBrokerRegistrationTimeoutMsProp)
-  }
-  def brokerHeartbeatIntervalMs: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.BrokerHeartbeatIntervalMsProp)
-    getInt(KafkaConfig.BrokerHeartbeatIntervalMsProp)
-  }
-  def brokerSessionTimeoutMs: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.BrokerSessionTimeoutMsProp)
-    getInt(KafkaConfig.BrokerSessionTimeoutMsProp)
-  }
+  val brokerIdGenerationEnable: Boolean = getBoolean(KafkaConfig.BrokerIdGenerationEnableProp)
+  val maxReservedBrokerId: Int = getInt(KafkaConfig.MaxReservedBrokerIdProp)
+  var brokerId: Int = getInt(KafkaConfig.BrokerIdProp)
+  val nodeId: Int = getInt(KafkaConfig.NodeIdProp)
+  val initialRegistrationTimeoutMs: Int = getInt(KafkaConfig.InitialBrokerRegistrationTimeoutMsProp)
+  val brokerHeartbeatIntervalMs: Int = getInt(KafkaConfig.BrokerHeartbeatIntervalMsProp)
+  val brokerSessionTimeoutMs: Int = getInt(KafkaConfig.BrokerSessionTimeoutMsProp)
 
   def requiresZookeeper: Boolean = processRoles.isEmpty
   def usesSelfManagedQuorum: Boolean = processRoles.nonEmpty
 
   private def parseProcessRoles(): Set[ProcessRole] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ProcessRolesProp)
     val roles = getList(KafkaConfig.ProcessRolesProp).asScala.map {
       case "broker" => BrokerRole
       case "controller" => ControllerRole
@@ -1788,84 +1675,35 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     }
   }
 
-  def metadataLogSegmentBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetadataLogSegmentBytesProp)
-    getInt(KafkaConfig.MetadataLogSegmentBytesProp)
-  }
-  def metadataLogSegmentMillis = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetadataLogSegmentMillisProp)
-    getLong(KafkaConfig.MetadataLogSegmentMillisProp)
-  }
-  def metadataRetentionBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetadataMaxRetentionBytesProp)
-    getLong(KafkaConfig.MetadataMaxRetentionBytesProp)
-  }
-  def metadataRetentionMillis = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetadataMaxRetentionMillisProp)
-    getLong(KafkaConfig.MetadataMaxRetentionMillisProp)
-  }
+  def metadataLogSegmentBytes = getInt(KafkaConfig.MetadataLogSegmentBytesProp)
+  def metadataLogSegmentMillis = getLong(KafkaConfig.MetadataLogSegmentMillisProp)
+  def metadataRetentionBytes = getLong(KafkaConfig.MetadataMaxRetentionBytesProp)
+  def metadataRetentionMillis = getLong(KafkaConfig.MetadataMaxRetentionMillisProp)
 
-  def numNetworkThreads = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumNetworkThreadsProp)
-    getInt(KafkaConfig.NumNetworkThreadsProp)
-  }
-  def backgroundThreads = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.BackgroundThreadsProp)
-    getInt(KafkaConfig.BackgroundThreadsProp)
-  }
-  def queuedMaxRequests = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.QueuedMaxRequestsProp)
-    getInt(KafkaConfig.QueuedMaxRequestsProp)
-  }
-  def queuedMaxBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.QueuedMaxBytesProp)
-    getLong(KafkaConfig.QueuedMaxBytesProp)
-  }
-  def numIoThreads = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumIoThreadsProp)
-    getInt(KafkaConfig.NumIoThreadsProp)
-  }
-  def messageMaxBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MessageMaxBytesProp)
-    getInt(KafkaConfig.MessageMaxBytesProp)
-  }
-  def requestTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.RequestTimeoutMsProp)
-    getInt(KafkaConfig.RequestTimeoutMsProp)
-  }
-  def connectionSetupTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ConnectionSetupTimeoutMsProp)
-    getLong(KafkaConfig.ConnectionSetupTimeoutMsProp)
-  }
-  def connectionSetupTimeoutMaxMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ConnectionSetupTimeoutMaxMsProp)
-    getLong(KafkaConfig.ConnectionSetupTimeoutMaxMsProp)
-  }
+  def numNetworkThreads = getInt(KafkaConfig.NumNetworkThreadsProp)
+  def backgroundThreads = getInt(KafkaConfig.BackgroundThreadsProp)
+  val queuedMaxRequests = getInt(KafkaConfig.QueuedMaxRequestsProp)
+  val queuedMaxBytes = getLong(KafkaConfig.QueuedMaxBytesProp)
+  def numIoThreads = getInt(KafkaConfig.NumIoThreadsProp)
+  def messageMaxBytes = getInt(KafkaConfig.MessageMaxBytesProp)
+  val requestTimeoutMs = getInt(KafkaConfig.RequestTimeoutMsProp)
+  val connectionSetupTimeoutMs = getLong(KafkaConfig.ConnectionSetupTimeoutMsProp)
+  val connectionSetupTimeoutMaxMs = getLong(KafkaConfig.ConnectionSetupTimeoutMaxMsProp)
 
   def getNumReplicaAlterLogDirsThreads: Int = {
-    val numThreads = Option(getInt(KafkaConfig.NumReplicaAlterLogDirsThreadsProp)).map(_.toInt)
-    if (numThreads.isEmpty) {
-      logDirs.size
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumReplicaAlterLogDirsThreadsProp)
-      numThreads.get
-    }
+    val numThreads: Integer = Option(getInt(KafkaConfig.NumReplicaAlterLogDirsThreadsProp)).getOrElse(logDirs.size)
+    numThreads
   }
 
   /************* Metadata Configuration ***********/
-  def metadataSnapshotMaxNewRecordBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetadataSnapshotMaxNewRecordBytesProp)
-    getLong(KafkaConfig.MetadataSnapshotMaxNewRecordBytesProp)
-  }
+  val metadataSnapshotMaxNewRecordBytes = getLong(KafkaConfig.MetadataSnapshotMaxNewRecordBytesProp)
   val metadataMaxIdleIntervalNs: Option[Long] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetadataMaxIdleIntervalMsProp)
     val value = TimeUnit.NANOSECONDS.convert(getInt(KafkaConfig.MetadataMaxIdleIntervalMsProp).toLong, TimeUnit.MILLISECONDS)
     if (value > 0) Some(value) else None
   }
 
   /************* Authorizer Configuration ***********/
   def createNewAuthorizer(): Option[Authorizer] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.AuthorizerClassNameProp)
     val className = getString(KafkaConfig.AuthorizerClassNameProp)
     if (className == null || className.isEmpty)
       None
@@ -1875,7 +1713,6 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   val earlyStartListeners: Set[ListenerName] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.EarlyStartListenersProp)
     val listenersSet = listeners.map(_.listenerName).toSet
     val controllerListenersSet = controllerListeners.map(_.listenerName).toSet
     Option(getString(KafkaConfig.EarlyStartListenersProp)) match {
@@ -1893,329 +1730,98 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   /** ********* Socket Server Configuration ***********/
-  def socketSendBufferBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.SocketSendBufferBytesProp)
-    getInt(KafkaConfig.SocketSendBufferBytesProp)
-  }
-  def socketReceiveBufferBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.SocketReceiveBufferBytesProp)
-    getInt(KafkaConfig.SocketReceiveBufferBytesProp)
-  }
-  def socketRequestMaxBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.SocketRequestMaxBytesProp)
-    getInt(KafkaConfig.SocketRequestMaxBytesProp)
-  }
-  def socketListenBacklogSize = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.SocketListenBacklogSizeProp)
-    getInt(KafkaConfig.SocketListenBacklogSizeProp)
-  }
-  def maxConnectionsPerIp = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MaxConnectionsPerIpProp)
-    getInt(KafkaConfig.MaxConnectionsPerIpProp)
-  }
-  def maxConnectionsPerIpOverrides: Map[String, Int] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MaxConnectionsPerIpOverridesProp)
+  val socketSendBufferBytes = getInt(KafkaConfig.SocketSendBufferBytesProp)
+  val socketReceiveBufferBytes = getInt(KafkaConfig.SocketReceiveBufferBytesProp)
+  val socketRequestMaxBytes = getInt(KafkaConfig.SocketRequestMaxBytesProp)
+  val socketListenBacklogSize = getInt(KafkaConfig.SocketListenBacklogSizeProp)
+  val maxConnectionsPerIp = getInt(KafkaConfig.MaxConnectionsPerIpProp)
+  val maxConnectionsPerIpOverrides: Map[String, Int] =
     getMap(KafkaConfig.MaxConnectionsPerIpOverridesProp, getString(KafkaConfig.MaxConnectionsPerIpOverridesProp)).map { case (k, v) => (k, v.toInt)}
-  }
-
-  def maxConnections = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MaxConnectionsProp)
-    getInt(KafkaConfig.MaxConnectionsProp)
-  }
-  def maxConnectionCreationRate = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MaxConnectionCreationRateProp)
-    getInt(KafkaConfig.MaxConnectionCreationRateProp)
-  }
-  def connectionsMaxIdleMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ConnectionsMaxIdleMsProp)
-    getLong(KafkaConfig.ConnectionsMaxIdleMsProp)
-  }
-  def failedAuthenticationDelayMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.FailedAuthenticationDelayMsProp)
-    getInt(KafkaConfig.FailedAuthenticationDelayMsProp)
-  }
+  def maxConnections = getInt(KafkaConfig.MaxConnectionsProp)
+  def maxConnectionCreationRate = getInt(KafkaConfig.MaxConnectionCreationRateProp)
+  val connectionsMaxIdleMs = getLong(KafkaConfig.ConnectionsMaxIdleMsProp)
+  val failedAuthenticationDelayMs = getInt(KafkaConfig.FailedAuthenticationDelayMsProp)
 
   /***************** rack configuration **************/
-  def rack = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.RackProp)
-    Option(getString(KafkaConfig.RackProp))
-  }
-  def replicaSelectorClassName = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaSelectorClassProp)
-    Option(getString(KafkaConfig.ReplicaSelectorClassProp))
-  }
+  val rack = Option(getString(KafkaConfig.RackProp))
+  val replicaSelectorClassName = Option(getString(KafkaConfig.ReplicaSelectorClassProp))
 
   /** ********* Log Configuration ***********/
-  def autoCreateTopicsEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.AutoCreateTopicsEnableProp)
-    getBoolean(KafkaConfig.AutoCreateTopicsEnableProp)
-  }
-  def numPartitions = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumPartitionsProp)
-    getInt(KafkaConfig.NumPartitionsProp)
-  }
-  def logDirs = {
-    val result = Option(getString(KafkaConfig.LogDirsProp))
-    if (result.isEmpty) {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogDirProp)
-      CoreUtils.parseCsvList(getString(KafkaConfig.LogDirProp))
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogDirsProp)
-      CoreUtils.parseCsvList(result.get)
-    }
-  }
-  def logSegmentBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogSegmentBytesProp)
-    getInt(KafkaConfig.LogSegmentBytesProp)
-  }
-  def logFlushIntervalMessages = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushIntervalMessagesProp)
-    getLong(KafkaConfig.LogFlushIntervalMessagesProp)
-  }
-  def logCleanerThreads = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerThreadsProp)
-    getInt(KafkaConfig.LogCleanerThreadsProp)
-  }
-  def numRecoveryThreadsPerDataDir = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumRecoveryThreadsPerDataDirProp)
-    getInt(KafkaConfig.NumRecoveryThreadsPerDataDirProp)
-  }
-  def logFlushSchedulerIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushSchedulerIntervalMsProp)
-    getLong(KafkaConfig.LogFlushSchedulerIntervalMsProp)
-  }
-  def logFlushOffsetCheckpointIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushOffsetCheckpointIntervalMsProp)
-    getInt(KafkaConfig.LogFlushOffsetCheckpointIntervalMsProp).toLong
-  }
-  def logFlushStartOffsetCheckpointIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushStartOffsetCheckpointIntervalMsProp)
-    getInt(KafkaConfig.LogFlushStartOffsetCheckpointIntervalMsProp).toLong
-  }
-  def logCleanupIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanupIntervalMsProp)
-    getLong(KafkaConfig.LogCleanupIntervalMsProp)
-  }
-  def logCleanupPolicy = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanupPolicyProp)
-    getList(KafkaConfig.LogCleanupPolicyProp)
-  }
-  def offsetsRetentionMinutes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetsRetentionMinutesProp)
-    getInt(KafkaConfig.OffsetsRetentionMinutesProp)
-  }
-  def offsetsRetentionCheckIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetsRetentionCheckIntervalMsProp)
-    getLong(KafkaConfig.OffsetsRetentionCheckIntervalMsProp)
-  }
-  def logRetentionBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionBytesProp)
-    getLong(KafkaConfig.LogRetentionBytesProp)
-  }
-  def logCleanerDedupeBufferSize = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerDedupeBufferSizeProp)
-    getLong(KafkaConfig.LogCleanerDedupeBufferSizeProp)
-  }
-  def logCleanerDedupeBufferLoadFactor = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerDedupeBufferLoadFactorProp)
-    getDouble(KafkaConfig.LogCleanerDedupeBufferLoadFactorProp)
-  }
-  def logCleanerIoBufferSize = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerIoBufferSizeProp)
-    getInt(KafkaConfig.LogCleanerIoBufferSizeProp)
-  }
-  def logCleanerIoMaxBytesPerSecond = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerIoMaxBytesPerSecondProp)
-    getDouble(KafkaConfig.LogCleanerIoMaxBytesPerSecondProp)
-  }
-  def logCleanerDeleteRetentionMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerDeleteRetentionMsProp)
-    getLong(KafkaConfig.LogCleanerDeleteRetentionMsProp)
-  }
-  def logCleanerMinCompactionLagMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerMinCompactionLagMsProp)
-    getLong(KafkaConfig.LogCleanerMinCompactionLagMsProp)
-  }
-  def logCleanerMaxCompactionLagMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerMaxCompactionLagMsProp)
-    getLong(KafkaConfig.LogCleanerMaxCompactionLagMsProp)
-  }
-  def logCleanerBackoffMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerBackoffMsProp)
-    getLong(KafkaConfig.LogCleanerBackoffMsProp)
-  }
-  def logCleanerMinCleanRatio = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerMinCleanRatioProp)
-    getDouble(KafkaConfig.LogCleanerMinCleanRatioProp)
-  }
-  def logCleanerEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogCleanerEnableProp)
-    getBoolean(KafkaConfig.LogCleanerEnableProp)
-  }
-  def logIndexSizeMaxBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogIndexSizeMaxBytesProp)
-    getInt(KafkaConfig.LogIndexSizeMaxBytesProp)
-  }
-  def logIndexIntervalBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogIndexIntervalBytesProp)
-    getInt(KafkaConfig.LogIndexIntervalBytesProp)
-  }
-  def logDeleteDelayMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogDeleteDelayMsProp)
-    getLong(KafkaConfig.LogDeleteDelayMsProp)
-  }
-  def logRollTimeMillis: java.lang.Long = {
-    val result = Option(getLong(KafkaConfig.LogRollTimeMillisProp))
-    if (result.isEmpty) {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeHoursProp)
-      60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeHoursProp)
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeMillisProp)
-      result.get
-    }
-  }
-  def logRollTimeJitterMillis: java.lang.Long = {
-    val result =  Option(getLong(KafkaConfig.LogRollTimeJitterMillisProp))
-    if (result.isEmpty) {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeJitterHoursProp)
-      60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeJitterHoursProp)
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRollTimeJitterMillisProp)
-      result.get
-    }
-  }
-  def logFlushIntervalMs: java.lang.Long = {
-    val result = Option(getLong(KafkaConfig.LogFlushIntervalMsProp))
-    if (result.isEmpty) {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushSchedulerIntervalMsProp)
-      getLong(KafkaConfig.LogFlushSchedulerIntervalMsProp)
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogFlushIntervalMsProp)
-      result.get
-    }
-  }
-  def minInSyncReplicas = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MinInSyncReplicasProp)
-    getInt(KafkaConfig.MinInSyncReplicasProp)
-  }
-  def logPreAllocateEnable: java.lang.Boolean = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogPreAllocateProp)
-    getBoolean(KafkaConfig.LogPreAllocateProp)
-  }
+  val autoCreateTopicsEnable = getBoolean(KafkaConfig.AutoCreateTopicsEnableProp)
+  val numPartitions = getInt(KafkaConfig.NumPartitionsProp)
+  val logDirs = CoreUtils.parseCsvList(Option(getString(KafkaConfig.LogDirsProp)).getOrElse(getString(KafkaConfig.LogDirProp)))
+  def logSegmentBytes = getInt(KafkaConfig.LogSegmentBytesProp)
+  def logFlushIntervalMessages = getLong(KafkaConfig.LogFlushIntervalMessagesProp)
+  val logCleanerThreads = getInt(KafkaConfig.LogCleanerThreadsProp)
+  def numRecoveryThreadsPerDataDir = getInt(KafkaConfig.NumRecoveryThreadsPerDataDirProp)
+  val logFlushSchedulerIntervalMs = getLong(KafkaConfig.LogFlushSchedulerIntervalMsProp)
+  val logFlushOffsetCheckpointIntervalMs = getInt(KafkaConfig.LogFlushOffsetCheckpointIntervalMsProp).toLong
+  val logFlushStartOffsetCheckpointIntervalMs = getInt(KafkaConfig.LogFlushStartOffsetCheckpointIntervalMsProp).toLong
+  val logCleanupIntervalMs = getLong(KafkaConfig.LogCleanupIntervalMsProp)
+  def logCleanupPolicy = getList(KafkaConfig.LogCleanupPolicyProp)
+  val offsetsRetentionMinutes = getInt(KafkaConfig.OffsetsRetentionMinutesProp)
+  val offsetsRetentionCheckIntervalMs = getLong(KafkaConfig.OffsetsRetentionCheckIntervalMsProp)
+  def logRetentionBytes = getLong(KafkaConfig.LogRetentionBytesProp)
+  val logCleanerDedupeBufferSize = getLong(KafkaConfig.LogCleanerDedupeBufferSizeProp)
+  val logCleanerDedupeBufferLoadFactor = getDouble(KafkaConfig.LogCleanerDedupeBufferLoadFactorProp)
+  val logCleanerIoBufferSize = getInt(KafkaConfig.LogCleanerIoBufferSizeProp)
+  val logCleanerIoMaxBytesPerSecond = getDouble(KafkaConfig.LogCleanerIoMaxBytesPerSecondProp)
+  def logCleanerDeleteRetentionMs = getLong(KafkaConfig.LogCleanerDeleteRetentionMsProp)
+  def logCleanerMinCompactionLagMs = getLong(KafkaConfig.LogCleanerMinCompactionLagMsProp)
+  def logCleanerMaxCompactionLagMs = getLong(KafkaConfig.LogCleanerMaxCompactionLagMsProp)
+  val logCleanerBackoffMs = getLong(KafkaConfig.LogCleanerBackoffMsProp)
+  def logCleanerMinCleanRatio = getDouble(KafkaConfig.LogCleanerMinCleanRatioProp)
+  val logCleanerEnable = getBoolean(KafkaConfig.LogCleanerEnableProp)
+  def logIndexSizeMaxBytes = getInt(KafkaConfig.LogIndexSizeMaxBytesProp)
+  def logIndexIntervalBytes = getInt(KafkaConfig.LogIndexIntervalBytesProp)
+  def logDeleteDelayMs = getLong(KafkaConfig.LogDeleteDelayMsProp)
+  def logRollTimeMillis: java.lang.Long = Option(getLong(KafkaConfig.LogRollTimeMillisProp)).getOrElse(60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeHoursProp))
+  def logRollTimeJitterMillis: java.lang.Long = Option(getLong(KafkaConfig.LogRollTimeJitterMillisProp)).getOrElse(60 * 60 * 1000L * getInt(KafkaConfig.LogRollTimeJitterHoursProp))
+  def logFlushIntervalMs: java.lang.Long = Option(getLong(KafkaConfig.LogFlushIntervalMsProp)).getOrElse(getLong(KafkaConfig.LogFlushSchedulerIntervalMsProp))
+  def minInSyncReplicas = getInt(KafkaConfig.MinInSyncReplicasProp)
+  def logPreAllocateEnable: java.lang.Boolean = getBoolean(KafkaConfig.LogPreAllocateProp)
 
   // We keep the user-provided String as `MetadataVersion.fromVersionString` can choose a slightly different version (eg if `0.10.0`
   // is passed, `0.10.0-IV0` may be picked)
   @nowarn("cat=deprecation")
-  private def logMessageFormatVersionString = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogMessageFormatVersionProp)
-    getString(KafkaConfig.LogMessageFormatVersionProp)
-  }
+  private val logMessageFormatVersionString = getString(KafkaConfig.LogMessageFormatVersionProp)
 
   /* See `TopicConfig.MESSAGE_FORMAT_VERSION_CONFIG` for details */
   @deprecated("3.0")
   lazy val logMessageFormatVersion =
-    if (LogConfig.shouldIgnoreMessageFormatVersion(interBrokerProtocolVersion))
-      MetadataVersion.fromVersionString(Defaults.LogMessageFormatVersion)
-    else MetadataVersion.fromVersionString(logMessageFormatVersionString)
+  if (LogConfig.shouldIgnoreMessageFormatVersion(interBrokerProtocolVersion))
+    MetadataVersion.fromVersionString(Defaults.LogMessageFormatVersion)
+  else MetadataVersion.fromVersionString(logMessageFormatVersionString)
 
-  def logMessageTimestampType = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogMessageTimestampTypeProp)
-    TimestampType.forName(getString(KafkaConfig.LogMessageTimestampTypeProp))
-  }
-  def logMessageTimestampDifferenceMaxMs: Long = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogMessageTimestampDifferenceMaxMsProp)
-    getLong(KafkaConfig.LogMessageTimestampDifferenceMaxMsProp)
-  }
-  def logMessageDownConversionEnable: Boolean = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogMessageDownConversionEnableProp)
-    getBoolean(KafkaConfig.LogMessageDownConversionEnableProp)
-  }
+  def logMessageTimestampType = TimestampType.forName(getString(KafkaConfig.LogMessageTimestampTypeProp))
+  def logMessageTimestampDifferenceMaxMs: Long = getLong(KafkaConfig.LogMessageTimestampDifferenceMaxMsProp)
+  def logMessageDownConversionEnable: Boolean = getBoolean(KafkaConfig.LogMessageDownConversionEnableProp)
 
   /** ********* Replication configuration ***********/
-  def controllerSocketTimeoutMs: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControllerSocketTimeoutMsProp)
-    getInt(KafkaConfig.ControllerSocketTimeoutMsProp)
-  }
-  def defaultReplicationFactor: Int = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DefaultReplicationFactorProp)
-    getInt(KafkaConfig.DefaultReplicationFactorProp)
-  }
-  def replicaLagTimeMaxMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaLagTimeMaxMsProp)
-    getLong(KafkaConfig.ReplicaLagTimeMaxMsProp)
-  }
-  def replicaSocketTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaSocketTimeoutMsProp)
-    getInt(KafkaConfig.ReplicaSocketTimeoutMsProp)
-  }
-  def replicaSocketReceiveBufferBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaSocketReceiveBufferBytesProp)
-    getInt(KafkaConfig.ReplicaSocketReceiveBufferBytesProp)
-  }
-  def replicaFetchMaxBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaFetchMaxBytesProp)
-    getInt(KafkaConfig.ReplicaFetchMaxBytesProp)
-  }
-  def replicaFetchWaitMaxMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaFetchWaitMaxMsProp)
-    getInt(KafkaConfig.ReplicaFetchWaitMaxMsProp)
-  }
-  def replicaFetchMinBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaFetchMinBytesProp)
-    getInt(KafkaConfig.ReplicaFetchMinBytesProp)
-  }
-  def replicaFetchResponseMaxBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaFetchResponseMaxBytesProp)
-    getInt(KafkaConfig.ReplicaFetchResponseMaxBytesProp)
-  }
-  def replicaFetchBackoffMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaFetchBackoffMsProp)
-    getInt(KafkaConfig.ReplicaFetchBackoffMsProp)
-  }
-  def numReplicaFetchers = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumReplicaFetchersProp)
-    getInt(KafkaConfig.NumReplicaFetchersProp)
-  }
-  def replicaHighWatermarkCheckpointIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicaHighWatermarkCheckpointIntervalMsProp)
-    getLong(KafkaConfig.ReplicaHighWatermarkCheckpointIntervalMsProp)
-  }
-  def fetchPurgatoryPurgeIntervalRequests = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.FetchPurgatoryPurgeIntervalRequestsProp)
-    getInt(KafkaConfig.FetchPurgatoryPurgeIntervalRequestsProp)
-  }
-  def producerPurgatoryPurgeIntervalRequests = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ProducerPurgatoryPurgeIntervalRequestsProp)
-    getInt(KafkaConfig.ProducerPurgatoryPurgeIntervalRequestsProp)
-  }
-  def deleteRecordsPurgatoryPurgeIntervalRequests = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DeleteRecordsPurgatoryPurgeIntervalRequestsProp)
-    getInt(KafkaConfig.DeleteRecordsPurgatoryPurgeIntervalRequestsProp)
-  }
-  def autoLeaderRebalanceEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.AutoLeaderRebalanceEnableProp)
-    getBoolean(KafkaConfig.AutoLeaderRebalanceEnableProp)
-  }
-  def leaderImbalancePerBrokerPercentage = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LeaderImbalancePerBrokerPercentageProp)
-    getInt(KafkaConfig.LeaderImbalancePerBrokerPercentageProp)
-  }
-  def leaderImbalanceCheckIntervalSeconds: Long = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LeaderImbalanceCheckIntervalSecondsProp)
-    getLong(KafkaConfig.LeaderImbalanceCheckIntervalSecondsProp)
-  }
-  def uncleanLeaderElectionEnable: java.lang.Boolean = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.UncleanLeaderElectionEnableProp)
-    getBoolean(KafkaConfig.UncleanLeaderElectionEnableProp)
-  }
+  val controllerSocketTimeoutMs: Int = getInt(KafkaConfig.ControllerSocketTimeoutMsProp)
+  val defaultReplicationFactor: Int = getInt(KafkaConfig.DefaultReplicationFactorProp)
+  val replicaLagTimeMaxMs = getLong(KafkaConfig.ReplicaLagTimeMaxMsProp)
+  val replicaSocketTimeoutMs = getInt(KafkaConfig.ReplicaSocketTimeoutMsProp)
+  val replicaSocketReceiveBufferBytes = getInt(KafkaConfig.ReplicaSocketReceiveBufferBytesProp)
+  val replicaFetchMaxBytes = getInt(KafkaConfig.ReplicaFetchMaxBytesProp)
+  val replicaFetchWaitMaxMs = getInt(KafkaConfig.ReplicaFetchWaitMaxMsProp)
+  val replicaFetchMinBytes = getInt(KafkaConfig.ReplicaFetchMinBytesProp)
+  val replicaFetchResponseMaxBytes = getInt(KafkaConfig.ReplicaFetchResponseMaxBytesProp)
+  val replicaFetchBackoffMs = getInt(KafkaConfig.ReplicaFetchBackoffMsProp)
+  def numReplicaFetchers = getInt(KafkaConfig.NumReplicaFetchersProp)
+  val replicaHighWatermarkCheckpointIntervalMs = getLong(KafkaConfig.ReplicaHighWatermarkCheckpointIntervalMsProp)
+  val fetchPurgatoryPurgeIntervalRequests = getInt(KafkaConfig.FetchPurgatoryPurgeIntervalRequestsProp)
+  val producerPurgatoryPurgeIntervalRequests = getInt(KafkaConfig.ProducerPurgatoryPurgeIntervalRequestsProp)
+  val deleteRecordsPurgatoryPurgeIntervalRequests = getInt(KafkaConfig.DeleteRecordsPurgatoryPurgeIntervalRequestsProp)
+  val autoLeaderRebalanceEnable = getBoolean(KafkaConfig.AutoLeaderRebalanceEnableProp)
+  val leaderImbalancePerBrokerPercentage = getInt(KafkaConfig.LeaderImbalancePerBrokerPercentageProp)
+  val leaderImbalanceCheckIntervalSeconds: Long = getLong(KafkaConfig.LeaderImbalanceCheckIntervalSecondsProp)
+  def uncleanLeaderElectionEnable: java.lang.Boolean = getBoolean(KafkaConfig.UncleanLeaderElectionEnableProp)
 
   // We keep the user-provided String as `MetadataVersion.fromVersionString` can choose a slightly different version (eg if `0.10.0`
   // is passed, `0.10.0-IV0` may be picked)
-  def interBrokerProtocolVersionString = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.InterBrokerProtocolVersionProp)
-    getString(KafkaConfig.InterBrokerProtocolVersionProp)
-  }
-  def interBrokerProtocolVersion = if (processRoles.isEmpty) {
+  val interBrokerProtocolVersionString = getString(KafkaConfig.InterBrokerProtocolVersionProp)
+  val interBrokerProtocolVersion = if (processRoles.isEmpty) {
     MetadataVersion.fromVersionString(interBrokerProtocolVersionString)
   } else {
     if (originals.containsKey(KafkaConfig.InterBrokerProtocolVersionProp)) {
@@ -2236,141 +1842,53 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   /** ********* Controlled shutdown configuration ***********/
-  def controlledShutdownMaxRetries = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControlledShutdownMaxRetriesProp)
-    getInt(KafkaConfig.ControlledShutdownMaxRetriesProp)
-  }
-  def controlledShutdownRetryBackoffMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControlledShutdownRetryBackoffMsProp)
-    getLong(KafkaConfig.ControlledShutdownRetryBackoffMsProp)
-  }
-  def controlledShutdownEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControlledShutdownEnableProp)
-    getBoolean(KafkaConfig.ControlledShutdownEnableProp)
-  }
+  val controlledShutdownMaxRetries = getInt(KafkaConfig.ControlledShutdownMaxRetriesProp)
+  val controlledShutdownRetryBackoffMs = getLong(KafkaConfig.ControlledShutdownRetryBackoffMsProp)
+  val controlledShutdownEnable = getBoolean(KafkaConfig.ControlledShutdownEnableProp)
 
   /** ********* Feature configuration ***********/
   def isFeatureVersioningSupported = interBrokerProtocolVersion.isFeatureVersioningSupported()
 
   /** ********* Group coordinator configuration ***********/
-  def groupMinSessionTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.GroupMinSessionTimeoutMsProp)
-    getInt(KafkaConfig.GroupMinSessionTimeoutMsProp)
-  }
-  def groupMaxSessionTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.GroupMaxSessionTimeoutMsProp)
-    getInt(KafkaConfig.GroupMaxSessionTimeoutMsProp)
-  }
-  def groupInitialRebalanceDelay = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.GroupInitialRebalanceDelayMsProp)
-    getInt(KafkaConfig.GroupInitialRebalanceDelayMsProp)
-  }
-  def groupMaxSize = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.GroupMaxSizeProp)
-    getInt(KafkaConfig.GroupMaxSizeProp)
-  }
+  val groupMinSessionTimeoutMs = getInt(KafkaConfig.GroupMinSessionTimeoutMsProp)
+  val groupMaxSessionTimeoutMs = getInt(KafkaConfig.GroupMaxSessionTimeoutMsProp)
+  val groupInitialRebalanceDelay = getInt(KafkaConfig.GroupInitialRebalanceDelayMsProp)
+  val groupMaxSize = getInt(KafkaConfig.GroupMaxSizeProp)
 
   /** ********* Offset management configuration ***********/
-  def offsetMetadataMaxSize = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetMetadataMaxSizeProp)
-    getInt(KafkaConfig.OffsetMetadataMaxSizeProp)
-  }
-  def offsetsLoadBufferSize = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetsLoadBufferSizeProp)
-    getInt(KafkaConfig.OffsetsLoadBufferSizeProp)
-  }
-  def offsetsTopicReplicationFactor = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetsTopicReplicationFactorProp)
-    getShort(KafkaConfig.OffsetsTopicReplicationFactorProp)
-  }
-  def offsetsTopicPartitions = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetsTopicPartitionsProp)
-    getInt(KafkaConfig.OffsetsTopicPartitionsProp)
-  }
-  def offsetCommitTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetCommitTimeoutMsProp)
-    getInt(KafkaConfig.OffsetCommitTimeoutMsProp)
-  }
-  def offsetCommitRequiredAcks = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetCommitRequiredAcksProp)
-    getShort(KafkaConfig.OffsetCommitRequiredAcksProp)
-  }
-  def offsetsTopicSegmentBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetsTopicSegmentBytesProp)
-    getInt(KafkaConfig.OffsetsTopicSegmentBytesProp)
-  }
-  def offsetsTopicCompressionCodec = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.OffsetsTopicCompressionCodecProp)
-    Option(getInt(KafkaConfig.OffsetsTopicCompressionCodecProp)).map(value => CompressionCodec.getCompressionCodec(value)).orNull
-  }
+  val offsetMetadataMaxSize = getInt(KafkaConfig.OffsetMetadataMaxSizeProp)
+  val offsetsLoadBufferSize = getInt(KafkaConfig.OffsetsLoadBufferSizeProp)
+  val offsetsTopicReplicationFactor = getShort(KafkaConfig.OffsetsTopicReplicationFactorProp)
+  val offsetsTopicPartitions = getInt(KafkaConfig.OffsetsTopicPartitionsProp)
+  val offsetCommitTimeoutMs = getInt(KafkaConfig.OffsetCommitTimeoutMsProp)
+  val offsetCommitRequiredAcks = getShort(KafkaConfig.OffsetCommitRequiredAcksProp)
+  val offsetsTopicSegmentBytes = getInt(KafkaConfig.OffsetsTopicSegmentBytesProp)
+  val offsetsTopicCompressionCodec = Option(getInt(KafkaConfig.OffsetsTopicCompressionCodecProp)).map(value => CompressionCodec.getCompressionCodec(value)).orNull
 
   /** ********* Transaction management configuration ***********/
-  def transactionalIdExpirationMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionalIdExpirationMsProp)
-    getInt(KafkaConfig.TransactionalIdExpirationMsProp)
-  }
-  def transactionMaxTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsMaxTimeoutMsProp)
-    getInt(KafkaConfig.TransactionsMaxTimeoutMsProp)
-  }
-  def transactionTopicMinISR = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsTopicMinISRProp)
-    getInt(KafkaConfig.TransactionsTopicMinISRProp)
-  }
-  def transactionsLoadBufferSize = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsLoadBufferSizeProp)
-    getInt(KafkaConfig.TransactionsLoadBufferSizeProp)
-  }
-  def transactionTopicReplicationFactor = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsTopicReplicationFactorProp)
-    getShort(KafkaConfig.TransactionsTopicReplicationFactorProp)
-  }
-  def transactionTopicPartitions = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsTopicPartitionsProp)
-    getInt(KafkaConfig.TransactionsTopicPartitionsProp)
-  }
-  def transactionTopicSegmentBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsTopicSegmentBytesProp)
-    getInt(KafkaConfig.TransactionsTopicSegmentBytesProp)
-  }
-  def transactionAbortTimedOutTransactionCleanupIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsAbortTimedOutTransactionCleanupIntervalMsProp)
-    getInt(KafkaConfig.TransactionsAbortTimedOutTransactionCleanupIntervalMsProp)
-  }
-  def transactionRemoveExpiredTransactionalIdCleanupIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.TransactionsRemoveExpiredTransactionalIdCleanupIntervalMsProp)
-    getInt(KafkaConfig.TransactionsRemoveExpiredTransactionalIdCleanupIntervalMsProp)
-  }
+  val transactionalIdExpirationMs = getInt(KafkaConfig.TransactionalIdExpirationMsProp)
+  val transactionMaxTimeoutMs = getInt(KafkaConfig.TransactionsMaxTimeoutMsProp)
+  val transactionTopicMinISR = getInt(KafkaConfig.TransactionsTopicMinISRProp)
+  val transactionsLoadBufferSize = getInt(KafkaConfig.TransactionsLoadBufferSizeProp)
+  val transactionTopicReplicationFactor = getShort(KafkaConfig.TransactionsTopicReplicationFactorProp)
+  val transactionTopicPartitions = getInt(KafkaConfig.TransactionsTopicPartitionsProp)
+  val transactionTopicSegmentBytes = getInt(KafkaConfig.TransactionsTopicSegmentBytesProp)
+  val transactionAbortTimedOutTransactionCleanupIntervalMs = getInt(KafkaConfig.TransactionsAbortTimedOutTransactionCleanupIntervalMsProp)
+  val transactionRemoveExpiredTransactionalIdCleanupIntervalMs = getInt(KafkaConfig.TransactionsRemoveExpiredTransactionalIdCleanupIntervalMsProp)
 
-  def producerIdExpirationMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ProducerIdExpirationMsProp)
-    getInt(KafkaConfig.ProducerIdExpirationMsProp)
-  }
-  def producerIdExpirationCheckIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ProducerIdExpirationCheckIntervalMsProp)
-    getInt(KafkaConfig.ProducerIdExpirationCheckIntervalMsProp)
-  }
+  val producerIdExpirationMs = getInt(KafkaConfig.ProducerIdExpirationMsProp)
+  val producerIdExpirationCheckIntervalMs = getInt(KafkaConfig.ProducerIdExpirationCheckIntervalMsProp)
 
   /** ********* Metric Configuration **************/
-  def metricNumSamples = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetricNumSamplesProp)
-    getInt(KafkaConfig.MetricNumSamplesProp)
-  }
-  def metricSampleWindowMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetricSampleWindowMsProp)
-    getLong(KafkaConfig.MetricSampleWindowMsProp)
-  }
-  def metricRecordingLevel = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MetricRecordingLevelProp)
-    getString(KafkaConfig.MetricRecordingLevelProp)
-  }
+  val metricNumSamples = getInt(KafkaConfig.MetricNumSamplesProp)
+  val metricSampleWindowMs = getLong(KafkaConfig.MetricSampleWindowMsProp)
+  val metricRecordingLevel = getString(KafkaConfig.MetricRecordingLevelProp)
 
   /** ********* SSL/SASL Configuration **************/
   // Security configs may be overridden for listeners, so it is not safe to use the base values
   // Hence the base SSL/SASL configs are not fields of KafkaConfig, listener configs should be
   // retrieved using KafkaConfig#valuesWithPrefixOverride
   private def saslEnabledMechanisms(listenerName: ListenerName): Set[String] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.SaslEnabledMechanismsProp)
     val value = valuesWithPrefixOverride(listenerName.configPrefix).get(KafkaConfig.SaslEnabledMechanismsProp)
     if (value != null)
       value.asInstanceOf[util.List[String]].asScala.toSet
@@ -2382,145 +1900,50 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   def interBrokerSecurityProtocol = getInterBrokerListenerNameAndSecurityProtocol._2
   def controlPlaneListenerName = getControlPlaneListenerNameAndSecurityProtocol.map { case (listenerName, _) => listenerName }
   def controlPlaneSecurityProtocol = getControlPlaneListenerNameAndSecurityProtocol.map { case (_, securityProtocol) => securityProtocol }
-  def saslMechanismInterBrokerProtocol = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.SaslMechanismInterBrokerProtocolProp)
-    getString(KafkaConfig.SaslMechanismInterBrokerProtocolProp)
-  }
+  def saslMechanismInterBrokerProtocol = getString(KafkaConfig.SaslMechanismInterBrokerProtocolProp)
   val saslInterBrokerHandshakeRequestEnable = interBrokerProtocolVersion.isSaslInterBrokerHandshakeRequestEnabled()
 
   /** ********* DelegationToken Configuration **************/
-  def delegationTokenSecretKey = {
-    val result = Option(getPassword(KafkaConfig.DelegationTokenSecretKeyProp))
-    if (result.isEmpty) {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenSecretKeyAliasProp)
-      getPassword(KafkaConfig.DelegationTokenSecretKeyAliasProp)
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenSecretKeyProp)
-      result.get
-    }
-  }
+  val delegationTokenSecretKey = Option(getPassword(KafkaConfig.DelegationTokenSecretKeyProp))
+    .getOrElse(getPassword(KafkaConfig.DelegationTokenSecretKeyAliasProp))
   val tokenAuthEnabled = (delegationTokenSecretKey != null && !delegationTokenSecretKey.value.isEmpty)
-  def delegationTokenMaxLifeMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenMaxLifeTimeProp)
-    getLong(KafkaConfig.DelegationTokenMaxLifeTimeProp)
-  }
-  def delegationTokenExpiryTimeMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenExpiryTimeMsProp)
-    getLong(KafkaConfig.DelegationTokenExpiryTimeMsProp)
-  }
-  def delegationTokenExpiryCheckIntervalMs = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DelegationTokenExpiryCheckIntervalMsProp)
-    getLong(KafkaConfig.DelegationTokenExpiryCheckIntervalMsProp)
-  }
+  val delegationTokenMaxLifeMs = getLong(KafkaConfig.DelegationTokenMaxLifeTimeProp)
+  val delegationTokenExpiryTimeMs = getLong(KafkaConfig.DelegationTokenExpiryTimeMsProp)
+  val delegationTokenExpiryCheckIntervalMs = getLong(KafkaConfig.DelegationTokenExpiryCheckIntervalMsProp)
 
   /** ********* Password encryption configuration for dynamic configs *********/
-  def passwordEncoderSecret = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.PasswordEncoderSecretProp)
-    Option(getPassword(KafkaConfig.PasswordEncoderSecretProp))
-  }
-  def passwordEncoderOldSecret = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.PasswordEncoderOldSecretProp)
-    Option(getPassword(KafkaConfig.PasswordEncoderOldSecretProp))
-  }
-  def passwordEncoderCipherAlgorithm = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.PasswordEncoderCipherAlgorithmProp)
-    getString(KafkaConfig.PasswordEncoderCipherAlgorithmProp)
-  }
-  def passwordEncoderKeyFactoryAlgorithm = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.PasswordEncoderKeyFactoryAlgorithmProp)
-    Option(getString(KafkaConfig.PasswordEncoderKeyFactoryAlgorithmProp))
-  }
-  def passwordEncoderKeyLength = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.PasswordEncoderKeyLengthProp)
-    getInt(KafkaConfig.PasswordEncoderKeyLengthProp)
-  }
-  def passwordEncoderIterations = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.PasswordEncoderIterationsProp)
-    getInt(KafkaConfig.PasswordEncoderIterationsProp)
-  }
+  def passwordEncoderSecret = Option(getPassword(KafkaConfig.PasswordEncoderSecretProp))
+  def passwordEncoderOldSecret = Option(getPassword(KafkaConfig.PasswordEncoderOldSecretProp))
+  def passwordEncoderCipherAlgorithm = getString(KafkaConfig.PasswordEncoderCipherAlgorithmProp)
+  def passwordEncoderKeyFactoryAlgorithm = Option(getString(KafkaConfig.PasswordEncoderKeyFactoryAlgorithmProp))
+  def passwordEncoderKeyLength = getInt(KafkaConfig.PasswordEncoderKeyLengthProp)
+  def passwordEncoderIterations = getInt(KafkaConfig.PasswordEncoderIterationsProp)
 
   /** ********* Quota Configuration **************/
-  def numQuotaSamples = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumQuotaSamplesProp)
-    getInt(KafkaConfig.NumQuotaSamplesProp)
-  }
-  def quotaWindowSizeSeconds = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.QuotaWindowSizeSecondsProp)
-    getInt(KafkaConfig.QuotaWindowSizeSecondsProp)
-  }
-  def numReplicationQuotaSamples = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumReplicationQuotaSamplesProp)
-    getInt(KafkaConfig.NumReplicationQuotaSamplesProp)
-  }
-  def replicationQuotaWindowSizeSeconds = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ReplicationQuotaWindowSizeSecondsProp)
-    getInt(KafkaConfig.ReplicationQuotaWindowSizeSecondsProp)
-  }
-  def numAlterLogDirsReplicationQuotaSamples = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumAlterLogDirsReplicationQuotaSamplesProp)
-    getInt(KafkaConfig.NumAlterLogDirsReplicationQuotaSamplesProp)
-  }
-  def alterLogDirsReplicationQuotaWindowSizeSeconds = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.AlterLogDirsReplicationQuotaWindowSizeSecondsProp)
-    getInt(KafkaConfig.AlterLogDirsReplicationQuotaWindowSizeSecondsProp)
-  }
-  def numControllerQuotaSamples = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.NumControllerQuotaSamplesProp)
-    getInt(KafkaConfig.NumControllerQuotaSamplesProp)
-  }
-  def controllerQuotaWindowSizeSeconds = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControllerQuotaWindowSizeSecondsProp)
-    getInt(KafkaConfig.ControllerQuotaWindowSizeSecondsProp)
-  }
+  val numQuotaSamples = getInt(KafkaConfig.NumQuotaSamplesProp)
+  val quotaWindowSizeSeconds = getInt(KafkaConfig.QuotaWindowSizeSecondsProp)
+  val numReplicationQuotaSamples = getInt(KafkaConfig.NumReplicationQuotaSamplesProp)
+  val replicationQuotaWindowSizeSeconds = getInt(KafkaConfig.ReplicationQuotaWindowSizeSecondsProp)
+  val numAlterLogDirsReplicationQuotaSamples = getInt(KafkaConfig.NumAlterLogDirsReplicationQuotaSamplesProp)
+  val alterLogDirsReplicationQuotaWindowSizeSeconds = getInt(KafkaConfig.AlterLogDirsReplicationQuotaWindowSizeSecondsProp)
+  val numControllerQuotaSamples = getInt(KafkaConfig.NumControllerQuotaSamplesProp)
+  val controllerQuotaWindowSizeSeconds = getInt(KafkaConfig.ControllerQuotaWindowSizeSecondsProp)
 
   /** ********* Fetch Configuration **************/
-  def maxIncrementalFetchSessionCacheSlots = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.MaxIncrementalFetchSessionCacheSlots)
-    getInt(KafkaConfig.MaxIncrementalFetchSessionCacheSlots)
-  }
-  def fetchMaxBytes = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.FetchMaxBytes)
-    getInt(KafkaConfig.FetchMaxBytes)
-  }
+  val maxIncrementalFetchSessionCacheSlots = getInt(KafkaConfig.MaxIncrementalFetchSessionCacheSlots)
+  val fetchMaxBytes = getInt(KafkaConfig.FetchMaxBytes)
 
-  def deleteTopicEnable = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.DeleteTopicEnableProp)
-    getBoolean(KafkaConfig.DeleteTopicEnableProp)
-  }
-  def compressionType = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.CompressionTypeProp)
-    getString(KafkaConfig.CompressionTypeProp)
-  }
+  val deleteTopicEnable = getBoolean(KafkaConfig.DeleteTopicEnableProp)
+  def compressionType = getString(KafkaConfig.CompressionTypeProp)
 
   /** ********* Raft Quorum Configuration *********/
-  def quorumVoters = {
-    logger.info("[CTEST][GET-PARAM] " + RaftConfig.QUORUM_VOTERS_CONFIG)
-    getList(RaftConfig.QUORUM_VOTERS_CONFIG)
-  }
-  def quorumElectionTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + RaftConfig.QUORUM_ELECTION_TIMEOUT_MS_CONFIG)
-    getInt(RaftConfig.QUORUM_ELECTION_TIMEOUT_MS_CONFIG)
-  }
-  def quorumFetchTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + RaftConfig.QUORUM_FETCH_TIMEOUT_MS_CONFIG)
-    getInt(RaftConfig.QUORUM_FETCH_TIMEOUT_MS_CONFIG)
-  }
-  def quorumElectionBackoffMs = {
-    logger.info("[CTEST][GET-PARAM] " + RaftConfig.QUORUM_ELECTION_BACKOFF_MAX_MS_CONFIG)
-    getInt(RaftConfig.QUORUM_ELECTION_BACKOFF_MAX_MS_CONFIG)
-  }
-  def quorumLingerMs = {
-    logger.info("[CTEST][GET-PARAM] " + RaftConfig.QUORUM_LINGER_MS_CONFIG)
-    getInt(RaftConfig.QUORUM_LINGER_MS_CONFIG)
-  }
-  def quorumRequestTimeoutMs = {
-    logger.info("[CTEST][GET-PARAM] " + RaftConfig.QUORUM_REQUEST_TIMEOUT_MS_CONFIG)
-    getInt(RaftConfig.QUORUM_REQUEST_TIMEOUT_MS_CONFIG)
-  }
-  def quorumRetryBackoffMs = {
-    logger.info("[CTEST][GET-PARAM] " + RaftConfig.QUORUM_RETRY_BACKOFF_MS_CONFIG)
-    getInt(RaftConfig.QUORUM_RETRY_BACKOFF_MS_CONFIG)
-  }
+  val quorumVoters = getList(RaftConfig.QUORUM_VOTERS_CONFIG)
+  val quorumElectionTimeoutMs = getInt(RaftConfig.QUORUM_ELECTION_TIMEOUT_MS_CONFIG)
+  val quorumFetchTimeoutMs = getInt(RaftConfig.QUORUM_FETCH_TIMEOUT_MS_CONFIG)
+  val quorumElectionBackoffMs = getInt(RaftConfig.QUORUM_ELECTION_BACKOFF_MAX_MS_CONFIG)
+  val quorumLingerMs = getInt(RaftConfig.QUORUM_LINGER_MS_CONFIG)
+  val quorumRequestTimeoutMs = getInt(RaftConfig.QUORUM_REQUEST_TIMEOUT_MS_CONFIG)
+  val quorumRetryBackoffMs = getInt(RaftConfig.QUORUM_RETRY_BACKOFF_MS_CONFIG)
 
   def addReconfigurable(reconfigurable: Reconfigurable): Unit = {
     dynamicConfig.addReconfigurable(reconfigurable)
@@ -2534,22 +1957,12 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     val millisInMinute = 60L * 1000L
     val millisInHour = 60L * millisInMinute
 
-    val result = Option(getLong(KafkaConfig.LogRetentionTimeMillisProp))
-    val millis: java.lang.Long = if (result.isEmpty) {
-      Option(getInt(KafkaConfig.LogRetentionTimeMinutesProp)) match {
-        case Some(mins) => {
-          logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionTimeMinutesProp)
-          millisInMinute * mins
-        }
-        case None => {
-          logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionTimeHoursProp)
-          getInt(KafkaConfig.LogRetentionTimeHoursProp) * millisInHour
-        }
-      }
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.LogRetentionTimeMillisProp)
-      result.get
-    }
+    val millis: java.lang.Long =
+      Option(getLong(KafkaConfig.LogRetentionTimeMillisProp)).getOrElse(
+        Option(getInt(KafkaConfig.LogRetentionTimeMinutesProp)) match {
+          case Some(mins) => millisInMinute * mins
+          case None => getInt(KafkaConfig.LogRetentionTimeHoursProp) * millisInHour
+        })
 
     if (millis < 0) return -1
     millis
@@ -2567,13 +1980,7 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     CoreUtils.listenerListToEndPoints(getString(KafkaConfig.ListenersProp), effectiveListenerSecurityProtocolMap)
 
   def controllerListenerNames: Seq[String] = {
-    val result = Option(getString(KafkaConfig.ControllerListenerNamesProp))
-    val value = if (result.isEmpty) {
-      ""
-    } else {
-      logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControllerListenerNamesProp)
-      result.get
-    }
+    val value = Option(getString(KafkaConfig.ControllerListenerNamesProp)).getOrElse("")
     if (value.isEmpty) {
       Seq.empty
     } else {
@@ -2584,10 +1991,7 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   def controllerListeners: Seq[EndPoint] =
     listeners.filter(l => controllerListenerNames.contains(l.listenerName.value()))
 
-  def saslMechanismControllerProtocol: String = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.SaslMechanismControllerProtocolProp)
-    getString(KafkaConfig.SaslMechanismControllerProtocolProp)
-  }
+  def saslMechanismControllerProtocol: String = getString(KafkaConfig.SaslMechanismControllerProtocolProp)
 
   def controlPlaneListener: Option[EndPoint] = {
     controlPlaneListenerName.map { listenerName =>
@@ -2605,7 +2009,6 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
 
   // Use advertised listeners if defined, fallback to listeners otherwise
   def effectiveAdvertisedListeners: Seq[EndPoint] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.AdvertisedListenersProp)
     val advertisedListenersProp = getString(KafkaConfig.AdvertisedListenersProp)
     if (advertisedListenersProp != null)
       CoreUtils.listenerListToEndPoints(advertisedListenersProp, effectiveListenerSecurityProtocolMap, requireDistinctPorts=false)
@@ -2614,8 +2017,6 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   private def getInterBrokerListenerNameAndSecurityProtocol: (ListenerName, SecurityProtocol) = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.InterBrokerListenerNameProp)
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.InterBrokerSecurityProtocolProp)
     Option(getString(KafkaConfig.InterBrokerListenerNameProp)) match {
       case Some(_) if originals.containsKey(KafkaConfig.InterBrokerSecurityProtocolProp) =>
         throw new ConfigException(s"Only one of ${KafkaConfig.InterBrokerListenerNameProp} and " +
@@ -2636,7 +2037,6 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   private def getControlPlaneListenerNameAndSecurityProtocol: Option[(ListenerName, SecurityProtocol)] = {
     Option(getString(KafkaConfig.ControlPlaneListenerNameProp)) match {
       case Some(name) =>
-        logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ControlPlaneListenerNameProp)
         val listenerName = ListenerName.normalised(name)
         val securityProtocol = effectiveListenerSecurityProtocolMap.getOrElse(listenerName,
           throw new ConfigException(s"Listener with ${listenerName.value} defined in " +
@@ -2644,7 +2044,7 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
         Some(listenerName, securityProtocol)
 
       case None => None
-   }
+    }
   }
 
   private def getSecurityProtocol(protocolName: String, configName: String): SecurityProtocol = {
@@ -2656,7 +2056,6 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
   }
 
   def effectiveListenerSecurityProtocolMap: Map[ListenerName, SecurityProtocol] = {
-    logger.info("[CTEST][GET-PARAM] " + KafkaConfig.ListenerSecurityProtocolMapProp)
     val mapValue = getMap(KafkaConfig.ListenerSecurityProtocolMapProp, getString(KafkaConfig.ListenerSecurityProtocolMapProp))
       .map { case (listenerName, protocolName) =>
         ListenerName.normalised(listenerName) -> getSecurityProtocol(protocolName, KafkaConfig.ListenerSecurityProtocolMapProp)
@@ -2830,17 +2229,17 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
 
     require(!effectiveAdvertisedListeners.exists(endpoint => endpoint.host=="0.0.0.0"),
       s"${KafkaConfig.AdvertisedListenersProp} cannot use the nonroutable meta-address 0.0.0.0. "+
-      s"Use a routable IP address.")
+        s"Use a routable IP address.")
 
     // validate control.plane.listener.name config
     if (controlPlaneListenerName.isDefined) {
       require(advertisedListenerNames.contains(controlPlaneListenerName.get),
         s"${KafkaConfig.ControlPlaneListenerNameProp} must be a listener name defined in ${KafkaConfig.AdvertisedListenersProp}. " +
-        s"The valid options based on currently configured listeners are ${advertisedListenerNames.map(_.value).mkString(",")}")
+          s"The valid options based on currently configured listeners are ${advertisedListenerNames.map(_.value).mkString(",")}")
       // controlPlaneListenerName should be different from interBrokerListenerName
       require(!controlPlaneListenerName.get.value().equals(interBrokerListenerName.value()),
         s"${KafkaConfig.ControlPlaneListenerNameProp}, when defined, should have a different value from the inter broker listener name. " +
-        s"Currently they both have the value ${controlPlaneListenerName.get}")
+          s"Currently they both have the value ${controlPlaneListenerName.get}")
     }
 
     val messageFormatVersion = new MessageFormatVersion(logMessageFormatVersionString, interBrokerProtocolVersionString)
@@ -2850,12 +2249,12 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     val recordVersion = logMessageFormatVersion.highestSupportedRecordVersion
     require(interBrokerProtocolVersion.highestSupportedRecordVersion().value >= recordVersion.value,
       s"log.message.format.version $logMessageFormatVersionString can only be used when inter.broker.protocol.version " +
-      s"is set to version ${MetadataVersion.minSupportedFor(recordVersion).shortVersion} or higher")
+        s"is set to version ${MetadataVersion.minSupportedFor(recordVersion).shortVersion} or higher")
 
     if (offsetsTopicCompressionCodec == ZStdCompressionCodec)
       require(interBrokerProtocolVersion.highestSupportedRecordVersion().value >= IBP_2_1_IV0.highestSupportedRecordVersion().value,
         "offsets.topic.compression.codec zstd can only be used when inter.broker.protocol.version " +
-        s"is set to version ${IBP_2_1_IV0.shortVersion} or higher")
+          s"is set to version ${IBP_2_1_IV0.shortVersion} or higher")
 
     val interBrokerUsesSasl = interBrokerSecurityProtocol == SecurityProtocol.SASL_PLAINTEXT || interBrokerSecurityProtocol == SecurityProtocol.SASL_SSL
     require(!interBrokerUsesSasl || saslInterBrokerHandshakeRequestEnable || saslMechanismInterBrokerProtocol == SaslConfigs.GSSAPI_MECHANISM,
@@ -2876,8 +2275,8 @@ class KafkaConfig private(doLog: Boolean, val props: java.util.Map[_, _], dynami
     if (connectionsMaxIdleMs >= 0)
       require(failedAuthenticationDelayMs < connectionsMaxIdleMs,
         s"${KafkaConfig.FailedAuthenticationDelayMsProp}=$failedAuthenticationDelayMs should always be less than" +
-        s" ${KafkaConfig.ConnectionsMaxIdleMsProp}=$connectionsMaxIdleMs to prevent failed" +
-        s" authentication responses from timing out")
+          s" ${KafkaConfig.ConnectionsMaxIdleMsProp}=$connectionsMaxIdleMs to prevent failed" +
+          s" authentication responses from timing out")
 
     val principalBuilderClass = getClass(KafkaConfig.PrincipalBuilderClassProp)
     require(principalBuilderClass != null, s"${KafkaConfig.PrincipalBuilderClassProp} must be non-null")
