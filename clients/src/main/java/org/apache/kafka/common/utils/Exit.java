@@ -33,7 +33,7 @@ public class Exit {
     private static final Procedure DEFAULT_HALT_PROCEDURE = new Procedure() {
         @Override
         public void execute(int statusCode, String message) {
-            Runtime.getRuntime().halt(statusCode);
+//            Runtime.getRuntime().halt(statusCode);
         }
     };
 
@@ -47,10 +47,10 @@ public class Exit {
     private static final ShutdownHookAdder DEFAULT_SHUTDOWN_HOOK_ADDER = new ShutdownHookAdder() {
         @Override
         public void addShutdownHook(String name, Runnable runnable) {
-            if (name != null)
-                Runtime.getRuntime().addShutdownHook(KafkaThread.nonDaemon(name, runnable));
-            else
-                Runtime.getRuntime().addShutdownHook(new Thread(runnable));
+//            if (name != null)
+//                Runtime.getRuntime().addShutdownHook(KafkaThread.nonDaemon(name, runnable));
+//            else
+//                Runtime.getRuntime().addShutdownHook(new Thread(runnable));
         }
     };
 
